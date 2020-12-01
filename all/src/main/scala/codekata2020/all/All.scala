@@ -8,9 +8,9 @@ import codekata2020.day1.Puzzle
 
 object All extends App {
   override def run(args: List[String]): URIO[zio.ZEnv, ExitCode] = (for {
-    p1 <- Puzzle.Part1.solution()
+    p1 <- Puzzle.Part1.solution(silent = false)
     _ <- putStrLn(s" Part 1: ${p1}")
-    p2 <- Puzzle.Part2.solution()
+    p2 <- Puzzle.Part2.solution(silent = false)
     _ <- putStrLn(s" Part 2: ${p2}")
   } yield ()).exitCode
 }

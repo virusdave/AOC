@@ -1,4 +1,4 @@
-import codekata2020.common.NoConsoleOutput
+import codekata2020.common._
 import zio.{UIO, ZIO}
 import zio.console.Console
 
