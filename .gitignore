@@ -1,0 +1,8 @@
+# Ignore all IntelliJ directories (duh)
+.idea
+
+# Ignore build artifacts
+target/
+
+# Ignore vim swapfiles
+*.swp
