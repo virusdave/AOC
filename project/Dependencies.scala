@@ -31,6 +31,7 @@ object Dependencies {
     val Cats = "org.typelevel" %% "cats-core" % LibraryVersions.Cats
     val Enumeratum = "com.beachape" %% "enumeratum" % LibraryVersions.Enumeratum
     val EnumeratumPlayJson = "com.beachape" %% "enumeratum-play-json" % LibraryVersions.Enumeratum
+    val ParserCombinators = "org.scala-lang.modules" %% "scala-parser-combinators" % "1.1.2"
 //    val Postgres = "org.postgresql" % "postgresql" % LibraryVersions.Postgres
     val Shapeless = "com.chuusai" %% "shapeless" % LibraryVersions.Shapeless
 //    val Slick = "com.typesafe.slick" %% "slick" % LibraryVersions.Slick
@@ -76,6 +77,7 @@ object Dependencies {
 
   val commonDependencies: Set[ModuleID] = Set(
     Libraries.Cats,
+    Libraries.ParserCombinators,
     //Libraries.Postgres,
     Libraries.Shapeless,
     //Libraries.Slickless,
