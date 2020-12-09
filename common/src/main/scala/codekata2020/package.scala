@@ -4,12 +4,17 @@ import zio.console.Console
 
 package object codekata2020 {
 
-  implicit class _AnyOps[A](val in: A) extends AnyVal {
+  implicit class _AnyOps[A](private val in: A) extends AnyVal {
     /** Lift a value into an [[Option]], but with better type inference than `Some(in)` */
     def some: Option[A] = Option(in)
 
     /** Pipe operator.  Pipe a value `v` into function `f` with `v |> f`. */
-    def |>[B](fn: A => B): B = fn(in)
+    def |>[B](fn: A => B): B = pipe(fn)
+    def pipe[B](fn: A => B): B = fn(in)
+
+    def dup: (A, A) = (in, in)
+    def diag[B](fn: (A, A) => B): B = fn(in, in)
+
     def zio: UIO[A] = UIO.succeed(in)
   }
 
