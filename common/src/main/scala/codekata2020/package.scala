@@ -18,6 +18,10 @@ package object codekata2020 {
     def zio: UIO[A] = UIO.succeed(in)
   }
 
+  implicit class _IntOps(private val in: Int) extends AnyVal {
+    def big: BigInt = BigInt(in)
+  }
+
   implicit class _ZIOOps[R, E, A](val in: ZIO[R, E, A]) extends AnyVal {
     /** Apply an aspect to an effectful program */
     def @@[R1 <: R, E1 >: E](aspect: ZAspect[R1, E1]): ZIO[R1, E1, A] = aspect(in)
