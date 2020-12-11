@@ -5,6 +5,7 @@ import scala.util.parsing.combinator._
 
 object Puzzle extends RegexParsers {
   private val inputs = in.linesIterator.toIndexedSeq.map(BigInt.apply)
+//  private val inputs = in.split("\n\n").toIndexedSeq
 
   def bagType: Parser[String] = """[a-z]+ [a-z]+""".r <~ """bag(s?)""".r
   def count: Parser[Int] = """\d+""".r ^^ { _.toInt }
