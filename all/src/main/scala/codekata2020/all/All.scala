@@ -4,7 +4,7 @@ import codekata2020._
 import zio._
 import zio.console._
 
-import codekata2020.day12.Puzzle
+import codekata2020.day13.Puzzle
 
 
 object All extends App {

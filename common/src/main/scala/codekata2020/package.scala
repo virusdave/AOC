@@ -1,4 +1,5 @@
 import codekata2020.common._
+import scala.util.Try
 import zio.{UIO, ZIO}
 import zio.console.Console
 
@@ -25,6 +26,11 @@ package object codekata2020 {
 
   implicit class _IntOps(private val in: Int) extends AnyVal {
     def big: BigInt = BigInt(in)
+  }
+
+  implicit class _StringOps(private val in: String) extends AnyVal {
+    def big: BigInt = BigInt(in)
+    def safeBig: Option[BigInt] = Try(in.big).toOption
   }
 
   implicit class _ZIOOps[R, E, A](private val in: ZIO[R, E, A]) extends AnyVal {
