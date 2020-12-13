@@ -76,6 +76,7 @@ object Dependencies {
   }
 
   val commonDependencies: Set[ModuleID] = Set(
+    Libraries.Breeze,
     Libraries.Cats,
     Libraries.ParserCombinators,
     //Libraries.Postgres,
