@@ -30,7 +30,9 @@ package object codekata2020 {
 
   implicit class _StringOps(private val in: String) extends AnyVal {
     def big: BigInt = BigInt(in)
+    def bigBinary: BigInt = BigInt(in, 2)
     def safeBig: Option[BigInt] = Try(in.big).toOption
+    def safeBigBinary: Option[BigInt] = Try(in.bigBinary).toOption
   }
 
   implicit class _ZIOOps[R, E, A](private val in: ZIO[R, E, A]) extends AnyVal {
