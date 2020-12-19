@@ -24,6 +24,9 @@ package object codekata2020 {
     def zio: UIO[A] = UIO.succeed(in)
     def debug: A = tap(System.out.println)
   }
+
+  implicit class _BooleanOps(private val in: Boolean) extends AnyVal {
+    def toInt: Int = if (in) 1 else 0
   }
 
   implicit class _IntOps(private val in: Int) extends AnyVal {
