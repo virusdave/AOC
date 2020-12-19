@@ -22,6 +22,8 @@ package object codekata2020 {
     def diag[B](fn: (A, A) => B): B = fn(in, in)
 
     def zio: UIO[A] = UIO.succeed(in)
+    def debug: A = tap(System.out.println)
+  }
   }
 
   implicit class _IntOps(private val in: Int) extends AnyVal {
