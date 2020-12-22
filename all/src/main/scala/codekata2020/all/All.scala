@@ -7,7 +7,7 @@ import zio.clock._
 import zio.console._
 import zio.duration._
 
-import codekata2020.day19.Puzzle
+import codekata2020.day20.Puzzle
 
 object All extends App {
   override def run(args: List[String]): URIO[zio.ZEnv, ExitCode] = (for {
