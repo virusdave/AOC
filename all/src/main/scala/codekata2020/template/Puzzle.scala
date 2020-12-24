@@ -4,10 +4,6 @@ import codekata2020._
 import scala.util.parsing.combinator._
 
 object Puzzle extends RegexParsers {
-  private val inputs = in.linesIterator.toIndexedSeq.map(_.big)
-//  private val inputs = in.split("\n\n").toIndexedSeq
-
-
   def bagType: Parser[String] = """[a-z]+ [a-z]+""".r <~ """bag(s?)""".r
   def count: Parser[Int] = """\d+""".r ^^ { _.toInt }
   def bagCount: Parser[Int ~ String] = count ~ bagType
@@ -30,6 +26,9 @@ object Puzzle extends RegexParsers {
 
     }.zio
   }
+
+  private def inputs = in.linesIterator.toIndexedSeq.map(_.big)
+  //  private def inputs = in.split("\n\n").toIndexedSeq
 
   private lazy val in2 =
     """""".stripMargin
