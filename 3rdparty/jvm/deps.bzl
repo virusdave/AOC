@@ -7,7 +7,7 @@ _VER_AMMONITE = "2.2.0"
 _VER_CATS = "2.2.0"
 _VER_ENUMERATUM = "1.6.1"
 _VER_SHAPELESS = "2.3.3"
-_VER_ZIO = "1.0.3"
+_VER_ZIO = "1.0.11"
 _VER_ZIO_PRELUDE = "1.0.0-RC1"
 
 def _deps():
