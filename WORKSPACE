@@ -30,7 +30,38 @@ protobuf_deps()
 ####################################################################################################
 
 
-# TODO(Dave): Reorganize this file in some sensible fashion
+####################################################################################################
+# Nixpkgs dependencies (put early to use in toolchains)
+#--------------------------------------------------------------------------------------------------#
+# HEAD as of 2021-08-23
+rules_nixpkgs_commit = "c40b35f73e5ab1c0096d95abf63027a3b8054061"
+rules_nixpkgs_sha256 = "47fffc870a25d82deedb887c32481a43a12f56b51e5002773046f81fbe3ea9df"
+http_archive(
+    name = "io_tweag_rules_nixpkgs",
+    sha256 = rules_nixpkgs_sha256,
+    strip_prefix = "rules_nixpkgs-{}".format(rules_nixpkgs_commit),
+    urls = ["https://github.com/tweag/rules_nixpkgs/archive/{}.tar.gz".format(rules_nixpkgs_commit)],
+)
+
+load("@io_tweag_rules_nixpkgs//nixpkgs:repositories.bzl", "rules_nixpkgs_dependencies")
+rules_nixpkgs_dependencies()
+
+# TODO(Dave): Move these to an external nixpkgs.bzl file.
+load("@io_tweag_rules_nixpkgs//nixpkgs:nixpkgs.bzl", "nixpkgs_git_repository", "nixpkgs_package")
+nixpkgs_sha256 = "16b86dd4c19ffbd93f1d225df1b0f179bf0e418fd9ce9337ff491762a65658e7"
+nixpkgs_git_repository(
+    name = "nixpkgs",
+    revision = "21.05",
+    sha256 = nixpkgs_sha256,
+)
+nixpkgs_package(
+    name = "nixpkgs-jdk11",
+    attribute_path = "pkgs.jdk11",
+    repository = "@nixpkgs//:default.nix",
+    build_file = "@bazel_tools//tools/jdk:jdk.BUILD",
+)
+####################################################################################################
+
 
 ####################################################################################################
 # JVM 3rdparty dependencies
@@ -54,6 +85,7 @@ load("@maven//:defs.bzl", "pinned_maven_install")
 # $ ./bazel run @unpinned_maven//:pin
 pinned_maven_install()
 ####################################################################################################
+
 
 ####################################################################################################
 # Scala support, via rules_scala
