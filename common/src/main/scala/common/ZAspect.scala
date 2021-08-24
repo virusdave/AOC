@@ -1,4 +1,4 @@
-package codekata2020.common
+package common
 
 import zio.ZIO
 

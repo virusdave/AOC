@@ -1,4 +1,4 @@
-package codekata2020.common
+package common
 
 import java.io.IOException
 import zio.{IO, UIO, ZIO}
