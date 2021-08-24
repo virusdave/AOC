@@ -34,8 +34,8 @@ def jvm_dependencies():
         name = "maven",
         artifacts = _deps(),
         repositories = [
-            "https://maven.google.com",
             "https://repo1.maven.org/maven2",
+            "https://maven.google.com",
         ],
         fetch_sources = True,
         maven_install_json = "@//3rdparty/jvm:pinned_maven_install.json",

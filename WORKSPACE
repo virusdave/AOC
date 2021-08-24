@@ -112,8 +112,11 @@ scala_config(scala_version = SCALA_VERSION)
 load("@io_bazel_rules_scala//scala:scala.bzl", "scala_repositories")
 scala_repositories()
 
-load("@io_bazel_rules_scala//scala:toolchains.bzl", "scala_register_toolchains")
-scala_register_toolchains()
+#load("@io_bazel_rules_scala//scala:toolchains.bzl", "scala_register_toolchains")
+#scala_register_toolchains()
+register_toolchains(
+    "//bazel/scala:scala_toolchain",
+)
 
 # optional: setup ScalaTest toolchain and dependencies
 load("@io_bazel_rules_scala//testing:scalatest.bzl", "scalatest_repositories", "scalatest_toolchain")

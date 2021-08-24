@@ -1,0 +1,10 @@
+load("//bazel/scala:rules.bzl", "scala_library")
+
+scala_library(
+    name = "common",
+    srcs = glob(["**/*.scala"]),
+    visibility = ["//visibility:public"],
+    deps = [
+        "@maven//:dev_zio_zio_2_13",
+    ],
+)

@@ -1,0 +1,17 @@
+load("@io_bazel_rules_scala//scala:scala_toolchain.bzl", "scala_toolchain")
+
+scala_toolchain(
+    name = "nonstrict_with_transitive_deps",
+    dependency_mode = "transitive",
+    dependency_tracking_method = "ast",
+    strict_deps_mode = "off",
+    unused_dependency_checker_mode = "error",
+    visibility = ["//visibility:public"],
+)
+
+toolchain(
+    name = "scala_toolchain",
+    toolchain = "nonstrict_with_transitive_deps",
+    toolchain_type = "@io_bazel_rules_scala//scala:toolchain_type",
+    visibility = ["//visibility:public"],
+)

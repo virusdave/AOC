@@ -1,0 +1,26 @@
+load("//bazel/scala:rules.bzl", "scala_binary", "scala_library")
+load("//bazel/scala:scalac_opts.bzl", "allow_unused_and_adapted_and_widened")
+
+scala_library(
+    name = "days",
+    srcs = glob(["**/codekata2020/day*/**/*.scala"]),
+    visibility = ["//visibility:public"],
+    default_scalacopts = allow_unused_and_adapted_and_widened,
+    deps = [
+        "//2020/common",
+        "@maven//:com_beachape_enumeratum_2_13",
+        "@maven//:dev_zio_zio_2_13",
+        "@maven//:org_scalanlp_breeze_2_13",
+        "@maven//:org_scala_lang_modules_scala_parser_combinators_2_13",
+    ],
+)
+
+scala_binary(
+    name = "all_days",
+    srcs = glob(["**/all/All.scala"]),
+    visibility = ["//visibility:public"],
+    main_class = "codekata2020.all.All",
+    deps = [
+        ":days",
+    ]
+)
