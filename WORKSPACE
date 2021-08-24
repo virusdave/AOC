@@ -1,0 +1,91 @@
+load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
+
+####################################################################################################
+# Core dependencies
+#--------------------------------------------------------------------------------------------------#
+# Load bazel skylib and google protobuf
+bazel_skylib_tag = "1.0.3"
+bazel_skylib_sha256 = "1c531376ac7e5a180e0237938a2536de0c54d93f5c278634818e0efc952dd56c"
+http_archive(
+    name = "bazel_skylib",
+    sha256 = bazel_skylib_sha256,
+    urls = [
+        "https://mirror.bazel.build/github.com/bazelbuild/bazel-skylib/releases/download/{tag}/bazel-skylib-{tag}.tar.gz".format(tag = bazel_skylib_tag),
+        "https://github.com/bazelbuild/bazel-skylib/releases/download/{tag}/bazel-skylib-{tag}.tar.gz".format(tag = bazel_skylib_tag),
+    ],
+)
+
+protobuf_tag = "3.10.1"
+protobuf_sha256 = "678d91d8a939a1ef9cb268e1f20c14cd55e40361dc397bb5881e4e1e532679b1"
+http_archive(
+    name = "com_google_protobuf",
+    sha256 = protobuf_sha256,
+    strip_prefix = "protobuf-{}".format(protobuf_tag),
+    type = "zip",
+    url = "https://github.com/protocolbuffers/protobuf/archive/v{}.zip".format(protobuf_tag),
+)
+
+load("@com_google_protobuf//:protobuf_deps.bzl", "protobuf_deps")
+protobuf_deps()
+####################################################################################################
+
+
+# TODO(Dave): Reorganize this file in some sensible fashion
+
+####################################################################################################
+# JVM 3rdparty dependencies
+#--------------------------------------------------------------------------------------------------#
+load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
+
+RULES_JVM_EXTERNAL_TAG = "4.1"
+RULES_JVM_EXTERNAL_SHA = "f36441aa876c4f6427bfb2d1f2d723b48e9d930b62662bf723ddfb8fc80f0140"
+
+http_archive(
+    name = "rules_jvm_external",
+    strip_prefix = "rules_jvm_external-%s" % RULES_JVM_EXTERNAL_TAG,
+    sha256 = RULES_JVM_EXTERNAL_SHA,
+    url = "https://github.com/bazelbuild/rules_jvm_external/archive/%s.zip" % RULES_JVM_EXTERNAL_TAG,
+)
+
+load("//3rdparty/jvm:deps.bzl", "jvm_dependencies")
+jvm_dependencies()
+load("@maven//:defs.bzl", "pinned_maven_install")
+# To update the pinned dependencies, use:
+# $ ./bazel run @unpinned_maven//:pin
+pinned_maven_install()
+####################################################################################################
+
+####################################################################################################
+# Scala support, via rules_scala
+#--------------------------------------------------------------------------------------------------#
+# HEAD as of 2021-01-15.
+rules_scala_version = "e7a948ad1948058a7a5ddfbd9d1629d6db839933"
+
+http_archive(
+    name = "io_bazel_rules_scala",
+    sha256 = "76e1abb8a54f61ada974e6e9af689c59fd9f0518b49be6be7a631ce9fa45f236",
+    strip_prefix = "rules_scala-%s" % rules_scala_version,
+    type = "zip",
+    url = "https://github.com/bazelbuild/rules_scala/archive/%s.zip" % rules_scala_version,
+)
+
+# Stores Scala version and other configuration
+# 2.12 is a default version, other versions can be use by passing them explicitly:
+# scala_config(scala_version = "2.11.12")
+load("@io_bazel_rules_scala//:scala_config.bzl", "scala_config")
+#scala_config()  # 2.12
+scala_config(scala_version = "2.13.3")
+
+load("@io_bazel_rules_scala//scala:scala.bzl", "scala_repositories")
+scala_repositories()
+
+load("@io_bazel_rules_scala//scala:toolchains.bzl", "scala_register_toolchains")
+scala_register_toolchains()
+
+# optional: setup ScalaTest toolchain and dependencies
+load("@io_bazel_rules_scala//testing:scalatest.bzl", "scalatest_repositories", "scalatest_toolchain")
+scalatest_repositories()
+scalatest_toolchain()
+#####################################################################################################
+
+

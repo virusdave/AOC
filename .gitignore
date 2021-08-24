@@ -1,8 +1,13 @@
 # Ignore all IntelliJ directories (duh)
 .idea
+.ijwb
 
 # Ignore build artifacts
 target/
 
 # Ignore vim swapfiles
 *.swp
+
+# Bazel output symlinks
+.bazel/
+bazel-out
