@@ -12,17 +12,23 @@ trait Syntax {
 
     /** Pipe operator.  Pipe a value `v` into function `f` with `v |> f`. */
     def |>[B](f: A => B): B = pipe(f)
+
     def pipe[B](f: A => B): B = f(in)
 
     /** Apply side-effecting function `f` on the value, returning the value.  Useful for debugging. */
-    def tap(f: A => Unit): A = { f(in); in }
+    def tap(f: A => Unit): A = {
+      f(in);
+      in
+    }
 
     /** Turn a value into two copies of the value */
     def dup: (A, A) = (in, in)
+
     /** Apply a binary function to this value, as both arguments */
     def diag[B](fn: (A, A) => B): B = fn(in, in)
 
     def zio: UIO[A] = UIO.succeed(in)
+
     def debug: A = tap(System.out.println)
   }
 
@@ -40,8 +46,11 @@ trait Syntax {
 
   implicit class _StringOps(private val in: String) {
     def big: BigInt = BigInt(in)
+
     def bigBinary: BigInt = BigInt(in, 2)
+
     def safeBig: Option[BigInt] = Try(in.big).toOption
+
     def safeBigBinary: Option[BigInt] = Try(in.bigBinary).toOption
   }
 
@@ -52,4 +61,25 @@ trait Syntax {
     def shush(silent: Boolean): ZIO[R with Console, E, A] = if (silent) (in @@ NoConsoleOutput) else in
   }
 
+  implicit class _GridOps[A, B](private val in: IndexedSeq[A])(implicit ev: A <:< IndexedSeq[B]) {
+    /** Safely get the contents of (x,y), or None if that's out of bounds. */
+    def get(x: Int, y: Int): Option[B] =
+      if (y >= 0 && y < in.length && x >= 0 && x < in(y).length) in(y)(x).some else None
+
+    /** Map via `f` at each location in the grid, passing the contents and the coordinates to `f` */
+    def mapGridWithLocation[C](
+        f: (B, (Int, Int)) => C)(
+        implicit ev: A <:< IndexedSeq[B])
+    : IndexedSeq[IndexedSeq[C]] = in.zipWithIndex.map { case (inner, y) =>
+      inner.zipWithIndex.map { case (b, x) => f(b, (x, y)) }
+    }
+
+    def rotate90cw: IndexedSeq[IndexedSeq[B]] = in.transpose.reflectHorizontal
+
+    def rotate90ccw: IndexedSeq[IndexedSeq[B]] = in.transpose.reflectVertical
+
+    def reflectHorizontal: IndexedSeq[IndexedSeq[B]] = in.map(_.reverse)
+
+    def reflectVertical: IndexedSeq[A] = in.reverse
+  }
 }
