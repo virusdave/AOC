@@ -1,8 +1,4 @@
 import common.Syntax
-import scala.collection
-import scala.util.Try
-import zio.{UIO, ZIO}
-import zio.console.Console
 
 package object codekata2020 extends Syntax {
 

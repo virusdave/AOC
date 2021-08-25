@@ -1,0 +1,51 @@
+load("//bazel/scala:rules.bzl", "scala_binary", "scala_library")
+
+scala_library(
+    name = "package",
+    srcs = glob([
+        "**/codekata2015/*.scala",
+    ],
+    exclude = [
+        "**/codekata2015/All.scala",
+    ]),
+    deps = [
+        "//common:syntax",
+        "@maven//:com_beachape_enumeratum_2_13",
+        "@maven//:dev_zio_zio_2_13",
+        "@maven//:org_scalanlp_breeze_2_13",
+        "@maven//:org_scala_lang_modules_scala_parser_combinators_2_13",
+    ],
+)
+
+scala_library(
+    name = "latest",
+    srcs = glob(["**/days/Latest.scala"]),
+    deps = [
+        ":package",
+    ],
+)
+
+scala_library(
+    name = "solutions",
+    srcs = glob(
+        ["**/days/*.scala"],
+        exclude = [
+            "**/Latest.scala",
+            "**/All.scala",
+        ],
+    ),
+    deps = [
+        ":package",
+        "//common:syntax",
+    ],
+)
+
+scala_binary(
+    name = "2015",
+    srcs = glob(["**/codekata2015/All.scala"]),
+    main_class = "codekata2015.All",
+    deps = [
+        ":latest",
+        ":solutions",
+    ]
+)

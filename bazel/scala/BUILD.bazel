@@ -5,7 +5,8 @@ scala_toolchain(
     dependency_mode = "transitive",
     dependency_tracking_method = "ast",
     strict_deps_mode = "off",
-    unused_dependency_checker_mode = "error",
+#    unused_dependency_checker_mode = "error",
+    unused_dependency_checker_mode = "off",
     visibility = ["//visibility:public"],
 )
 

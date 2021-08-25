@@ -26,6 +26,10 @@ trait Syntax {
     def debug: A = tap(System.out.println)
   }
 
+  implicit class _OptionOps[A](private val in: Option[A]) {
+    def fold2[B](ifNone: => B, ifSome: A => B): B = in.fold(ifNone)(ifSome)
+  }
+
   implicit class _BooleanOps(private val in: Boolean) {
     def toInt: Int = if (in) 1 else 0
   }
