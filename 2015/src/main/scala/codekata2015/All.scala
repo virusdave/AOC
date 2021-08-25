@@ -20,7 +20,7 @@ object All extends App {
 
 
     mid <- currentTime(TimeUnit.MILLISECONDS)
-    _ <- putStrLn(s"   Took: ${(mid - start).millis.render}")
+    _ <- putStrLn(s"   Which Took: [${(mid - start).millis.render}]")
 
 
     p1 <- puzzle.part1.fold2(ZIO.unit, p => p.solution.shush(silent = true))
@@ -28,12 +28,15 @@ object All extends App {
 
 
     end <- currentTime(TimeUnit.MILLISECONDS)
-    _ <- putStrLn(s"   Took: ${(end - mid).millis.render}")
+    _ <- putStrLn(s"   Which Took: [${(end - mid).millis.render}]")
   } yield ())
 
   private def solutions: Seq[Puzzle] = Seq(
     days.Latest,
-    // days.Day2,
-    // days.Day1,
+    days.Day5,
+    days.Day4,
+    days.Day3,
+    days.Day2,
+    days.Day1,
   )
 }

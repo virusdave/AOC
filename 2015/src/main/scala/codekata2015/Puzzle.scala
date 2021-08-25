@@ -10,8 +10,8 @@ trait PuzzlePart[A] {
 trait Puzzle extends RegexParsers {
   type A
   final type Part = PuzzlePart[A]
+  def dayNum: Int
   def part1: Option[Part]
   def part2: Option[Part]
-  def dayNum: Int
   def in: String
 }

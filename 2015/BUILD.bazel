@@ -30,13 +30,11 @@ scala_library(
     srcs = glob(
         ["**/days/*.scala"],
         exclude = [
-            "**/Latest.scala",
-            "**/All.scala",
+            "**/days/Latest.scala",
         ],
     ),
     deps = [
         ":package",
-        "//common:syntax",
     ],
 )
 

@@ -1,14 +1,19 @@
 package codekata2015
 package days
-import zio.RIO
+
 
 object Latest extends Puzzle {
-  override type A = Int
-  override def part1: Option[Part] = None
+  override type A = Any
 
+  override def dayNum: Int = 8
+
+  override def part1: Option[Part] = None
   override def part2: Option[Part] = None
 
-  override def dayNum: Int = 1
+  def inputs = in.linesIterator
 
-  override def in: String = """"""
+  val in2 = ""
+  val in3 = ""
+
+  override def in: String = ""
 }
