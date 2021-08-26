@@ -1,14 +1,15 @@
 package codekata2015
 package days
+import scala.annotation.tailrec
 
 object Latest extends Puzzle {
   override type A = Any
-  override def dayNum: Int = 10
+  override def dayNum: Int = 11
 
   override def part1: Option[Part] = None
   override def part2: Option[Part] = None
 
-  def inputs = in2.linesIterator
+  def inputs = in2
 
   val in2 = ""
   val in3 = ""
