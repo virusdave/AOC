@@ -3,7 +3,7 @@ package days
 
 import scala.collection.mutable
 
-object Day7 extends Puzzle {
+object Day07 extends Puzzle {
   override type A = Any
 
   override def dayNum: Int = 7

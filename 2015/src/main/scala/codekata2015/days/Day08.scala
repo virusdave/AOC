@@ -3,7 +3,7 @@ package days
 
 import zio.RIO
 
-object Day8 extends Puzzle {
+object Day08 extends Puzzle {
   override def skipWhitespace: Boolean = false
 
   override type A = Any

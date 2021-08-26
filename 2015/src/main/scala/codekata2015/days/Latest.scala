@@ -3,11 +3,9 @@ package days
 
 object Latest extends Puzzle {
   override type A = Any
-
-  override def dayNum: Int = 9
+  override def dayNum: Int = 10
 
   override def part1: Option[Part] = None
-
   override def part2: Option[Part] = None
 
   def inputs = in2.linesIterator

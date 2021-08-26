@@ -3,7 +3,7 @@ package days
 
 import breeze.math.Complex
 
-object Day3 extends Puzzle {
+object Day03 extends Puzzle {
   override type A = Any
   override def dayNum: Int = 3
 
