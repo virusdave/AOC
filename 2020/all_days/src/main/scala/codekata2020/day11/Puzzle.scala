@@ -23,7 +23,7 @@ object Puzzle extends RegexParsers {
       } yield c).count(_ == '#')
 
     def iterate(board: Board): Board =
-      board.mapGridWithLocation[Char, Char] {
+      board.mapGridWithLocation[Char] {
         case ('.', _) => '.'
         case (prevState, (x, y)) => nextGeneration(prevState)(countOccupiedNear(x, y, board))
       }
@@ -60,7 +60,7 @@ object Puzzle extends RegexParsers {
       } yield c).count(_ == '#')
 
     def iterate(board: Board): Board =
-      board.mapGridWithLocation[Char, Char] {
+      board.mapGridWithLocation[Char] {
         case ('.', _) => '.'
         case (prevState, (x, y)) => nextGeneration(prevState)(countOccupiedSeenFrom(x, y, board))
       }
