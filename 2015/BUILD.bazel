@@ -4,6 +4,7 @@ scala_library(
     name = "package",
     srcs = glob([
         "**/codekata2015/*.scala",
+        "**/codekata2015/util/*.scala"
     ],
     exclude = [
         "**/codekata2015/All.scala",
