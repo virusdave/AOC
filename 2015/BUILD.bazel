@@ -12,6 +12,8 @@ scala_library(
         "//common:syntax",
         "@maven//:com_beachape_enumeratum_2_13",
         "@maven//:dev_zio_zio_2_13",
+        "@maven//:io_circe_circe_core_2_13",
+        "@maven//:io_circe_circe_parser_2_13",
         "@maven//:org_scalanlp_breeze_2_13",
         "@maven//:org_scala_lang_modules_scala_parser_combinators_2_13",
     ],

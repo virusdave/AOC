@@ -5,6 +5,7 @@ load("//bazel/scala:scala_version.bzl", "SCALA_VERSION")
 
 _VER_AMMONITE = "2.2.0"
 _VER_CATS = "2.2.0"
+_VER_CIRCE = "0.14.1"
 _VER_ENUMERATUM = "1.6.1"
 _VER_SHAPELESS = "2.3.3"
 _VER_ZIO = "1.0.11"
@@ -18,6 +19,14 @@ def _deps():
         maven.artifact("com.lihaoyi", _scala("ammonite-ops"), _VER_AMMONITE),
         maven.artifact("dev.zio", _scala("zio"), _VER_ZIO),
         maven.artifact("dev.zio", _scala("zio-streams"), _VER_ZIO),
+        maven.artifact("io.circe", _scala("circe-core"), _VER_CIRCE),
+        maven.artifact("io.circe", _scala("circe-generic"), _VER_CIRCE),
+        maven.artifact("io.circe", _scala("circe-literal"), _VER_CIRCE),
+        maven.artifact("io.circe", _scala("circe-numbers"), _VER_CIRCE),
+        maven.artifact("io.circe", _scala("circe-parser"), _VER_CIRCE),
+        maven.artifact("io.circe", _scala("circe-pointer"), _VER_CIRCE),
+        maven.artifact("io.circe", _scala("circe-pointer-literal"), _VER_CIRCE),
+        maven.artifact("io.circe", _scala("circe-shapes"), _VER_CIRCE),
         maven.artifact("junit", "junit", "4.13.2"),
         maven.artifact("org.hamcrest", "hamcrest-library", "2.2"),
         maven.artifact("org.scalanlp", _scala("breeze"), "1.0"),
