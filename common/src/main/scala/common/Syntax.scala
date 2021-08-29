@@ -40,6 +40,18 @@ trait Syntax {
     def toInt: Int = if (in) 1 else 0
   }
 
+  implicit class _SeqOps[A](private val in: Seq[A]) {
+    private def combs[B](n: Int, l: List[B]): Iterator[List[B]] = n match {
+      case _ if n < 0 || l.lengthCompare(n) < 0 => Iterator.empty
+      case 0 => Iterator(List.empty)
+      case n => l.tails.flatMap({
+        case Nil => Nil
+        case x :: xs => combs(n - 1, xs).map(x :: _)
+      })
+    }
+    def combinationsWithRepetition(n: Int): Iterator[Seq[A]] = combs(n, in.toList).map(_.toSeq)
+  }
+
   implicit class _IntOps(private val in: Int) {
     def big: BigInt = BigInt(in)
   }
