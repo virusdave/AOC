@@ -7,11 +7,13 @@ trait PuzzlePart[A] {
   def solution: RIO[ZEnv, A]
 }
 
-trait Puzzle extends RegexParsers {
-  type A
-  final type Part = PuzzlePart[A]
+trait Puzzle {
+  type PuzzleOut
+  final type Part = PuzzlePart[PuzzleOut]
   def dayNum: Int
   def part1: Option[Part]
   def part2: Option[Part]
   def in: String
 }
+
+trait ParserPuzzle extends Puzzle with RegexParsers

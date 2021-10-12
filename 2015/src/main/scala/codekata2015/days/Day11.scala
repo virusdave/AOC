@@ -3,8 +3,8 @@ package days
 
 import zio.RIO
 
-object Day11 extends Puzzle {
-  override type A = Any
+object Day11 extends ParserPuzzle {
+  override type PuzzleOut = Any
   override def dayNum: Int = 11
   val letters = ('a' to 'z')
   val paired = letters.lazyZip(('0' to '9') ++ letters).take(letters.size)

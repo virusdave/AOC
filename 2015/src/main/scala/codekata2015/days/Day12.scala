@@ -4,8 +4,8 @@ package days
 import io.circe._
 import zio.RIO
 
-object Day12 extends Puzzle {
-  override type A = Any
+object Day12 extends ParserPuzzle {
+  override type PuzzleOut = Any
   override def dayNum: Int = 12
 
   trait NumericSummer extends Json.Folder[Long] {

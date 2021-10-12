@@ -1,8 +1,8 @@
 package codekata2015
 package days
 
-object Latest extends Puzzle {
-  override type A = Any
+object Latest extends ParserPuzzle {
+  override type PuzzleOut = Any
   override def dayNum: Int = 19
 
   override def part1: Option[Part] = None

@@ -3,8 +3,8 @@ package days
 
 import zio.RIO
 
-object Day13 extends Puzzle {
-  override type A = Any
+object Day13 extends ParserPuzzle {
+  override type PuzzleOut = Any
   override def dayNum: Int = 13
 
   def pName: Parser[String] = "[A-Z][a-z]*".r

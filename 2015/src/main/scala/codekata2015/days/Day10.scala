@@ -3,8 +3,8 @@ package days
 
 import scala.annotation.tailrec
 
-object Day10 extends Puzzle {
-  override type A = Any
+object Day10 extends ParserPuzzle {
+  override type PuzzleOut = Any
   override def dayNum: Int = 10
 
   def rle(s: String): String = {

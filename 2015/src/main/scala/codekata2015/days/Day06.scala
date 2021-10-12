@@ -1,8 +1,8 @@
 package codekata2015
 package days
 
-object Day06 extends Puzzle {
-  override type A = Any
+object Day06 extends ParserPuzzle {
+  override type PuzzleOut = Any
 
   override def dayNum: Int = 6
 

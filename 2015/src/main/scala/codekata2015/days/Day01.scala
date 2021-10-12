@@ -2,8 +2,8 @@ package codekata2015
 package days
 import zio.RIO
 
-object Day01 extends Puzzle {
-  override type A = Int
+object Day01 extends ParserPuzzle {
+  override type PuzzleOut = Int
 
   override def dayNum: Int = 1
 

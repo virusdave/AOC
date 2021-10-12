@@ -3,8 +3,8 @@ package days
 
 import breeze.math.Complex
 
-object Day03 extends Puzzle {
-  override type A = Any
+object Day03 extends ParserPuzzle {
+  override type PuzzleOut = Any
   override def dayNum: Int = 3
 
   override def part1: Option[Part] = new Part {

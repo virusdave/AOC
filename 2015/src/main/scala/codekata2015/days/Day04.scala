@@ -3,8 +3,8 @@ package days
 
 import java.security.MessageDigest
 
-object Day04 extends Puzzle {
-  override type A = Option[Int]
+object Day04 extends ParserPuzzle {
+  override type PuzzleOut = Option[Int]
 
   override def dayNum: Int = 4
 

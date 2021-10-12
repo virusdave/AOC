@@ -4,8 +4,8 @@ package days
 import breeze.linalg._
 import zio.RIO
 
-object Day15 extends Puzzle {
-  override type A = Any
+object Day15 extends ParserPuzzle {
+  override type PuzzleOut = Any
   override def dayNum: Int = 15
 
   case class Ingredient(capacity: Int, durability: Int, flavor: Int, texture: Int, calories: Int)
