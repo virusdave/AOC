@@ -1,3 +1,3 @@
-import common.Syntax
+import common.{ParserSyntax, Syntax}
 
-package object codekata2016 extends Syntax { }
+package object codekata2016 extends Syntax with ParserSyntax { }

@@ -11,6 +11,7 @@ scala_library(
     ]),
     deps = [
         "//common:syntax",
+        "//common:parser_syntax",
         "@maven//:com_beachape_enumeratum_2_13",
         "@maven//:com_codecommit_gll_combinators_2_13",
         "@maven//:dev_zio_zio_2_13",

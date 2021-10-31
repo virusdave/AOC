@@ -2,9 +2,20 @@ load("//bazel/scala:rules.bzl", "scala_library")
 
 scala_library(
     name = "syntax",
-    srcs = glob(["**/*.scala"]),
+    srcs = glob(["**/*.scala"], exclude = ["src/main/scala/common/ParserSyntax.scala"]),
     visibility = ["//visibility:public"],
     deps = [
         "@maven//:dev_zio_zio_2_13",
+    ],
+)
+
+scala_library(
+    name = "parser_syntax",
+    srcs = ["src/main/scala/common/ParserSyntax.scala"],
+    visibility = ["//visibility:public"],
+    deps = [
+        ":syntax",
+        "@maven//:org_leibnizcenter_probabilistic_earley_parser",
+        "@maven//:org_scala_lang_modules_scala_parser_combinators_2_13",
     ],
 )

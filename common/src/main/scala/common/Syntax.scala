@@ -43,11 +43,11 @@ trait Syntax {
   implicit class _SeqOps[A](private val in: Seq[A]) {
     private def combs[B](n: Int, l: List[B]): Iterator[List[B]] = n match {
       case _ if n < 0 || l.lengthCompare(n) < 0 => Iterator.empty
-      case 0 => Iterator(List.empty)
+      case 0                                    => Iterator(List.empty)
       case n => l.tails.flatMap({
-        case Nil => Nil
-        case x :: xs => combs(n - 1, xs).map(x :: _)
-      })
+          case Nil     => Nil
+          case x :: xs => combs(n - 1, xs).map(x :: _)
+        })
     }
     def combinationsWithRepetition(n: Int): Iterator[Seq[A]] = combs(n, in.toList).map(_.toSeq)
   }
@@ -78,20 +78,30 @@ trait Syntax {
     def get(x: Int, y: Int): Option[B] =
       if (y >= 0 && y < in.length && x >= 0 && x < in(y).length) in(y)(x).some else None
 
+    def bounds: (Int, Int) = (in(0).length, in.length)
+
     /** Map via `f` at each location in the grid, passing the contents and the coordinates to `f` */
     def mapGridWithLocation[C](
         f: (B, (Int, Int)) => C)(
-        implicit ev: A <:< IndexedSeq[B])
-    : IndexedSeq[IndexedSeq[C]] = in.zipWithIndex.map { case (inner, y) =>
+        implicit ev: A <:< IndexedSeq[B]): Grid[C] = in.zipWithIndex.map { case (inner, y) =>
       inner.zipWithIndex.map { case (b, x) => f(b, (x, y)) }
     }
 
-    def rotate90cw: IndexedSeq[IndexedSeq[B]] = in.transpose.reflectHorizontal
+    def show[BB](f: B => BB): String =
+      in.map(_.map(f).mkString).mkString("\n", "\n", "")
 
-    def rotate90ccw: IndexedSeq[IndexedSeq[B]] = in.transpose.reflectVertical
+    def rotate90cw: Grid[B] = in.transpose.reflectHorizontal
 
-    def reflectHorizontal: IndexedSeq[IndexedSeq[B]] = in.map(_.reverse)
+    def rotate90ccw: Grid[B] = in.transpose.reflectVertical
+
+    def reflectHorizontal: Grid[B] = in.map(_.reverse)
 
     def reflectVertical: IndexedSeq[A] = in.reverse
   }
+
+  type Grid[A] = IndexedSeq[IndexedSeq[A]]
+  implicit class GridCompanionOps(in: IndexedSeq.type) {
+    def fill2d[A](x: Int, y: Int)(a: => A): Grid[A] = in.fill(y, x)(a)
+  }
+  val Grid: IndexedSeq.type = IndexedSeq
 }
