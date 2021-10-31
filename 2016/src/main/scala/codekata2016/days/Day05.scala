@@ -2,6 +2,7 @@ package codekata2016
 package days
 
 import java.security.MessageDigest
+import zio.blocking._
 import zio.console._
 import zio.stream.UStream
 import zio.{Promise, RIO, RefM, ZEnv, ZIO}
@@ -17,9 +18,9 @@ object Day05 extends ParserPuzzle {
   val hash = primedHash(inputs)
 
   override def part1: Option[Part] = new Part {
-    override def solution: RIO[Any, Any] =
+    override def solution: RIO[Blocking, Any] =
       UStream.iterate(1)(_ + 1)
-        .mapMPar(50)(n => ZIO.succeed(hash(n.toString)))
+        .mapMPar(50)(n => blocking(ZIO.succeed(hash(n.toString))))
         .filter(_.startsWith("00000"))
         .map(_.slice(5, 6))
         .take(8)
@@ -36,9 +37,9 @@ object Day05 extends ParserPuzzle {
         stop   <- Promise.make[Nothing, Unit]
         _ <- UStream.iterate(1)(_ + 1)
           .chunkN(10240)
-          .mapMPar(50)(n =>
+          .mapMPar(50)(n => blocking(
             // putStrLn(s"Trying $n").when(n % 2500000 == 0) *>
-              ZIO.succeed(hash(n.toString)))
+              ZIO.succeed(hash(n.toString))))
           .filter(_.startsWith("00000"))
           .map(x => (x.slice(5, 7).splitAt(1)))
           .takeUntilM(_ => stop.isDone)
