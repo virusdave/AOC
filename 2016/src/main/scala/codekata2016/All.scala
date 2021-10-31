@@ -15,7 +15,7 @@ object All extends App {
     start <- currentTime(TimeUnit.MILLISECONDS)
 
 
-    p2 <- puzzle.part2.fold2(ZIO.unit, p => p.solution.shush(silent = true))
+    p2 <- puzzle.part2.fold2(ZIO.unit, p => p.solution/*.shush(silent = true)*/)
     _ <- putStrLn(s" Part 2: ${p2}")
 
 
@@ -33,6 +33,7 @@ object All extends App {
 
   private def solutions: Seq[Puzzle] = Seq(
     days.Latest,
+    days.Day05,
     days.Day04,
     days.Day03,
     days.Day02,
