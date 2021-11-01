@@ -5,7 +5,7 @@ import zio.RIO
 
 object Latest extends ParserPuzzle {
   override type PuzzleOut = Any
-  override def dayNum: Int = 10
+  override def dayNum: Int = 11
 
   override def part1: Option[Part] = new Part {
     override def solution: RIO[Any, Any] = ???
@@ -19,6 +19,7 @@ object Latest extends ParserPuzzle {
 
   lazy val in2 =
     """"""
+
   lazy val in3 =
     """"""
 
