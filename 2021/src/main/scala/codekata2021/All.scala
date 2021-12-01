@@ -33,6 +33,6 @@ object All extends App {
 
   private def solutions: Seq[Puzzle] = Seq(
     days.Latest,
-//    days.Day01,
+    days.Day01,
   ).filter(day => day.part2.orElse(day.part1).isDefined)
 }
