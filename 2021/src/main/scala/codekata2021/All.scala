@@ -33,6 +33,7 @@ object All extends App {
 
   private def solutions: Seq[Puzzle] = Seq(
     days.Latest,
+    days.Day04,
     days.Day03,
     days.Day02,
     days.Day01,
