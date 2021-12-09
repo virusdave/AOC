@@ -78,6 +78,24 @@ trait Syntax {
     def get(x: Int, y: Int): Option[B] =
       if (y >= 0 && y < in.length && x >= 0 && x < in(y).length) in(y)(x).some else None
 
+    def getOrElse(x: Int, y: Int, orElse: B): B = get(x, y).getOrElse(orElse)
+
+    def findInGridWithLocation(fn: (B, (Int, Int)) => Boolean): Option[(B, (Int, Int))] = {
+      val (mx, my) = bounds
+      (for {
+        x <- 0 until mx
+        y <- 0 until my
+      } yield (x, y))
+        .find { case (x, y) => get(x, y).exists(fn(_, x -> y)) }
+        .map { case (x, y) => get(x, y).get -> (x -> y) }
+    }
+    def findInGrid(fn: B => Boolean): Option[(B, (Int, Int))] = findInGridWithLocation { case (b, _) => fn(b) }
+
+    def clip(x: Int, y: Int): Option[(Int, Int)] = {
+      val (mx, my) = bounds
+      (x, y).some.filter { case (x, y) => x >= 0 && x < mx && y >= 0 && y < my }
+    }
+
     def bounds: (Int, Int) = (in(0).length, in.length)
 
     /** Map via `f` at each location in the grid, passing the contents and the coordinates to `f` */
@@ -86,6 +104,8 @@ trait Syntax {
         implicit ev: A <:< IndexedSeq[B]): Grid[C] = in.zipWithIndex.map { case (inner, y) =>
       inner.zipWithIndex.map { case (b, x) => f(b, (x, y)) }
     }
+
+    def mapGrid[C](f: B => C): Grid[C] = in.map(_.map(f))
 
     def show[BB](f: B => BB): String =
       in.map(_.map(f).mkString).mkString("\n", "\n", "")
