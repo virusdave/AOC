@@ -91,6 +91,17 @@ trait Syntax {
     }
     def findInGrid(fn: B => Boolean): Option[(B, (Int, Int))] = findInGridWithLocation { case (b, _) => fn(b) }
 
+    def locationsInGridWithLocation(fn: (B, (Int, Int)) => Boolean): Seq[(B, (Int, Int))] = {
+      val (mx, my) = bounds
+      for {
+        x <- 0 until mx
+        y <- 0 until my
+        v <- get(x, y).toSeq
+        _ <- Seq(1).filter(_ => fn(v, (x, y)))
+      } yield v -> (x -> y)
+    }
+    def locationsInGrid(fn: B => Boolean): Seq[(B, (Int, Int))] = locationsInGridWithLocation { case (b, _) => fn(b) }
+
     def clip(x: Int, y: Int): Option[(Int, Int)] = {
       val (mx, my) = bounds
       (x, y).some.filter { case (x, y) => x >= 0 && x < mx && y >= 0 && y < my }
