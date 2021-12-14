@@ -45,6 +45,7 @@ def _deps():
         maven.artifact("org.hamcrest", "hamcrest-library", "2.2"),
         maven.artifact("org.leibnizcenter", "probabilistic-earley-parser", "0.9.12"),
         maven.artifact("org.scalanlp", _scala("breeze"), "1.0"),
+        maven.artifact("org.scala-graph", _scala("graph-core"), "1.13.2"),
         maven.artifact("org.scala-lang.modules", _scala("scala-parser-combinators"), "1.1.2"),
         maven.artifact("org.typelevel", _scala("cats-core"), _VER_CATS),
         maven.artifact("org.typelevel", _scala("cats-effect"), _VER_CATS_EFFECT),
