@@ -28,6 +28,8 @@ scala_library(
         "@maven//:org_creativescala_doodle_java2d_2_13",
         "@maven//:org_leibnizcenter_probabilistic_earley_parser",
         "@maven//:org_scalanlp_breeze_2_13",
+        "@maven//:org_scala_graph_graph_core_2_13",
+        "@maven//:org_scala_lang_modules_scala_parallel_collections_2_13",
         "@maven//:org_scala_lang_modules_scala_parser_combinators_2_13",
         "@maven//:org_typelevel_cats_core_2_13",
         "@maven//:org_typelevel_cats_effect_2_13",
