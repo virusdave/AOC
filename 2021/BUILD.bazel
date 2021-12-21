@@ -1,4 +1,5 @@
 load("//bazel/scala:rules.bzl", "scala_binary", "scala_library")
+load("//bazel/scala:scalac_opts.bzl", "allow_unused_and_adapted_and_widened")
 
 scala_library(
     name = "package",
@@ -39,6 +40,7 @@ scala_library(
 scala_library(
     name = "latest",
     srcs = glob(["**/days/Latest.scala"]),
+    default_scalacopts = allow_unused_and_adapted_and_widened,
     deps = [
         ":package",
     ],
@@ -52,6 +54,7 @@ scala_library(
             "**/days/Latest.scala",
         ],
     ),
+    default_scalacopts = allow_unused_and_adapted_and_widened,
     deps = [
         ":package",
     ],
