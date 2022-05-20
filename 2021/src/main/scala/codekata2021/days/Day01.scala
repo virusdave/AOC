@@ -8,17 +8,12 @@ object Day01 extends ParserPuzzle {
   override def dayNum: Int = 1
 
   override def part1: Option[Part] = new Part {
-    override def solution: RIO[Any, Any] = inputs.sliding(2).count {
-      case Seq(a, b) => a < b
-      case _ => false
-    }.zio
+    override def solution: RIO[Any, Any] = inputs.zip(inputs.drop(1)).count { case (a, b) => a < b }.zio
   }.some
 
   override def part2: Option[Part] = new Part {
-    override def solution: RIO[Any, Any] = inputs.sliding(3).map(_.sum).sliding(2).count {
-      case Seq(a, b) => a < b
-      case _ => false
-    }.zio
+    override def solution: RIO[Any, Any] =
+      inputs.sliding(3).map(_.sum).toSeq.|>(x => x.zip(x.drop(1))).count { case (a, b) => a < b }.zio
   }.some
 
   def inputs = in2.linesIterator.map(_.big)
@@ -41,4 +36,3 @@ object Day01 extends ParserPuzzle {
   override def in: String =
     """""".stripMargin
 }
-

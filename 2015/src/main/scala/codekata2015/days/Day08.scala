@@ -13,7 +13,7 @@ object Day08 extends ParserPuzzle {
   override def part1: Option[Part] = Option(new Part {
     abstract class Piece(val str: String)
     case class Raw(s: String) extends Piece(s)
-    case object Slash extends Piece(raw"\")
+    case object Slash extends Piece(raw"""\""")
     case object Quote extends Piece("\"")
     case class Hex(code: String) extends Piece("%c".format(BigInt(code, 16).toChar))
 
@@ -41,7 +41,7 @@ object Day08 extends ParserPuzzle {
     case object Slash extends Piece(raw"\\")
     case object Quote extends Piece("\\\"")
 
-    def slash: Parser[Slash.type] = raw"\" ^^^ Slash
+    def slash: Parser[Slash.type] = raw"""\""" ^^^ Slash
     def quote: Parser[Quote.type] = "\"" ^^^ Quote
     def raw: Parser[Raw] = ".".r ^^ Raw
     def line: Parser[Seq[Piece]] = rep1(slash | quote | raw)

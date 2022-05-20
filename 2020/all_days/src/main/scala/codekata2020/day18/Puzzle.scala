@@ -7,15 +7,15 @@ object Puzzle extends RegexParsers {
   private val inputs = in.linesIterator.toIndexedSeq
 
   sealed trait Expr
-  case class Paren(inner: Expr) extends Expr
-  case class Num(v: BigInt) extends Expr
+  case class Paren(inner: Expr)    extends Expr
+  case class Num(v: BigInt)        extends Expr
   case class Add(l: Expr, r: Expr) extends Expr
   case class Mul(l: Expr, r: Expr) extends Expr
 
   def num: Parser[Num] = """\d+""".r ^^ { n => Num(n.big) }
   def eval(e: Expr): BigInt = e match {
-    case Num(n) => n
-    case Paren(e) => eval(e)
+    case Num(n)    => n
+    case Paren(e)  => eval(e)
     case Add(l, r) => eval(l) + eval(r)
     case Mul(l, r) => eval(l) * eval(r)
   }
@@ -23,11 +23,12 @@ object Puzzle extends RegexParsers {
   object Part1 {
     def solution = {
       def paren: Parser[Paren] = "(" ~> expr <~ ")" ^^ { e => Paren(e) }
-      def expr: Parser[Expr] = (num | paren) ~ rep( ("+" | "*") ~ (num | paren)) ^^ {
+      def expr: Parser[Expr] = (num | paren) ~ rep(("+" | "*") ~ (num | paren)) ^^ {
         case t ~ ts => ts.foldLeft(t) {
-          case (t1, "+" ~ t2) => Add(t1, t2)
-          case (t1, "*" ~ t2) => Mul(t1, t2)
-        }
+            case (t1, "+" ~ t2) => Add(t1, t2)
+            case (t1, "*" ~ t2) => Mul(t1, t2)
+            case _              => ???
+          }
       }
 
       inputs.map(l => eval(parse(expr, l).get)).sum
@@ -37,8 +38,8 @@ object Puzzle extends RegexParsers {
   object Part2 {
     def solution = {
       def paren: Parser[Paren] = "(" ~> expr <~ ")" ^^ { e => Paren(e) }
-      def sums: Parser[Expr] = (num | paren) ~ rep( "+" ~> (num | paren)) ^^ { case t ~ ts => ts.foldLeft(t)(Add) }
-      def expr: Parser[Expr] = sums ~ rep("*" ~> sums) ^^ { case t ~ ts => ts.foldLeft(t)(Mul) }
+      def sums: Parser[Expr]   = (num | paren) ~ rep("+" ~> (num | paren)) ^^ { case t ~ ts => ts.foldLeft(t)(Add) }
+      def expr: Parser[Expr]   = sums ~ rep("*" ~> sums) ^^ { case t ~ ts => ts.foldLeft(t)(Mul) }
 
       inputs.map(line => eval(parse(expr, line).get)).sum
     }.zio

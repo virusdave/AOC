@@ -90,12 +90,12 @@ pinned_maven_install()
 ####################################################################################################
 # Scala support, via rules_scala
 #--------------------------------------------------------------------------------------------------#
-# HEAD as of 2021-01-15.
-rules_scala_version = "e7a948ad1948058a7a5ddfbd9d1629d6db839933"
+# HEAD as of 2022-05-06.
+rules_scala_version = "ddde9b3c21fd872aa8b1b035247dec333d04cb14"
 
 http_archive(
     name = "io_bazel_rules_scala",
-    sha256 = "76e1abb8a54f61ada974e6e9af689c59fd9f0518b49be6be7a631ce9fa45f236",
+    sha256 = "6c22c783dde35ab44aed045f350cc3ffea44db6daf7af9f20a0479d119852168",
     strip_prefix = "rules_scala-%s" % rules_scala_version,
     type = "zip",
     url = "https://github.com/bazelbuild/rules_scala/archive/%s.zip" % rules_scala_version,

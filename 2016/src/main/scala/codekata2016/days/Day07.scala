@@ -15,7 +15,10 @@ object Day07 extends ParserPuzzle {
 
   override def part1: Option[Part] = new Part {
     override def solution: RIO[Any, Any] = {
-      def hasMirror(s: String) = s.toList.sliding(4).exists { case List(a, b, c, d) => a != b && a == d && b == c }
+      def hasMirror(s: String) = s.toList.sliding(4).exists {
+        case List(a, b, c, d) => a != b && a == d && b == c
+        case _                => ???
+      }
 
       inputs.linesIterator.toSeq.map(parseAll(line, _).get).map { case (l, r) =>
         val (in, out) = r.unzip
@@ -28,7 +31,10 @@ object Day07 extends ParserPuzzle {
 
   override def part2: Option[Part] = new Part {
     override def solution: RIO[Any, Any] = {
-      def aba(s: String)                     = s.toList.sliding(3).filter { case List(a, b, c) => a == c && a != b }.distinct
+      def aba(s: String) = s.toList.sliding(3).filter {
+        case List(a, b, c) => a == c && a != b
+        case _             => ???
+      }.distinct
       def aba2bab(s: List[Char]): List[Char] = s.slice(1, 2) ++ s.take(2)
 
       inputs.linesIterator.toSeq.map(parseAll(line, _).get).map { case (l, r) =>

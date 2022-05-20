@@ -55,6 +55,9 @@ trait Syntax {
   implicit class _IntOps(private val in: Int) {
     def big: BigInt = BigInt(in)
   }
+  implicit class _LongOps(private val in: Long) {
+    def big: BigInt = BigInt(in)
+  }
 
   implicit class _StringOps(private val in: String) {
     def big: BigInt = BigInt(in)
