@@ -10,7 +10,10 @@ target/
 
 # Bazel output symlinks
 .bazel/
+bazel-AOC
+bazel-bin
 bazel-out
+bazel-testlogs
 
 # Ignore macos stupidity
 .DS_Store

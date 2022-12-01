@@ -1,9 +1,9 @@
 ################################################################################
 # General flags
 #-------------------------------------------------------------------------------
-build --symlink_prefix=.bazel/
-build --host_javabase=@nixpkgs-jdk11//:jdk
-build --javabase=@nixpkgs-jdk11//:jdk
+#build --symlink_prefix=.bazel/
+#build --host_javabase=@nixpkgs-jdk11//:jdk
+#build --javabase=@nixpkgs-jdk11//:jdk
 
 ################################################################################
 # rules_scala flags
