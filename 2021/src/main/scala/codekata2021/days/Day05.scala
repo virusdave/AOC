@@ -28,6 +28,7 @@ object Day05 extends ParserPuzzle {
             (Math.min(y1, y2) to Math.max(y1, y2)).map(x1 -> _)
           case Line((x1, y1), (x2, y2)) if y1 == y2 =>
             (Math.min(x1, x2) to Math.max(x1, x2)).map(_ -> y1)
+          case _ => ???  // It would fail on the following inputs: <lots elided>
         }
         thisLine.foldLeft(hit) { case (hit, (x, y)) => hit + ((x -> y) -> (hit.getOrElse(x -> y, 0) + 1)) }
 

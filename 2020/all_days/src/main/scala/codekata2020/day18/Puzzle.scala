@@ -27,6 +27,7 @@ object Puzzle extends RegexParsers {
         case t ~ ts => ts.foldLeft(t) {
           case (t1, "+" ~ t2) => Add(t1, t2)
           case (t1, "*" ~ t2) => Mul(t1, t2)
+          case (_, ~(_, _)) => ???  // It would fail on the following input: (_, ~(_, _))
         }
       }
 

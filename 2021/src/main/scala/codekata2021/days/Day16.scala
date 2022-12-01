@@ -64,6 +64,7 @@ object Day16 extends ParserPuzzle {
         case Packet(_, 5, Right(Seq(l, r))) => if (reduce(l) > reduce(r)) 1.big else 0.big
         case Packet(_, 6, Right(Seq(l, r))) => if (reduce(l) < reduce(r)) 1.big else 0.big
         case Packet(_, 7, Right(Seq(l, r))) => if (reduce(l) == reduce(r)) 1.big else 0.big
+        case _ => ??? // It would fail on the following inputs: <lots elided>
       }
       parsed.map(reduce)
     }
