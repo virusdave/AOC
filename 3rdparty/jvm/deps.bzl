@@ -5,13 +5,13 @@ load("@rules_jvm_external//:specs.bzl", "maven")
 load("//bazel/scala:scala_version.bzl", "SCALA_VERSION")
 
 _VER_AMMONITE = "2.2.0"
-_VER_CATS = "2.6.1"
-_VER_CATS_EFFECT = "3.2.9"
+_VER_CATS = "2.9.0"
+_VER_CATS_EFFECT = "3.4.2"
 _VER_CIRCE = "0.14.1"
 _VER_DOODLE = "0.10.0"
-_VER_ENUMERATUM = "1.6.1"
-_VER_SHAPELESS = "2.3.3"
-_VER_ZIO = "1.0.11"
+_VER_ENUMERATUM = "1.7.0"
+_VER_SHAPELESS = "2.3.10"
+_VER_ZIO = "1.0.17"
 _VER_ZIO_PRELUDE = "1.0.0-RC1"
 
 def _deps():
@@ -54,7 +54,6 @@ def _deps():
 
 def _scala(artifact):
     return "{}_{}".format(artifact, ".".join(SCALA_VERSION.split(".")[:2]))
-
 
 def jvm_dependencies():
     maven_install(
