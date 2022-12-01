@@ -43,11 +43,11 @@ trait Syntax {
   implicit class _SeqOps[A](private val in: Seq[A]) {
     private def combs[B](n: Int, l: List[B]): Iterator[List[B]] = n match {
       case _ if n < 0 || l.lengthCompare(n) < 0 => Iterator.empty
-      case 0                                    => Iterator(List.empty)
+      case 0 => Iterator(List.empty)
       case n => l.tails.flatMap({
-          case Nil     => Nil
-          case x :: xs => combs(n - 1, xs).map(x :: _)
-        })
+        case Nil => Nil
+        case x :: xs => combs(n - 1, xs).map(x :: _)
+      })
     }
     def combinationsWithRepetition(n: Int): Iterator[Seq[A]] = combs(n, in.toList).map(_.toSeq)
   }
@@ -64,6 +64,13 @@ trait Syntax {
     def safeBig: Option[BigInt] = Try(in.big).toOption
 
     def safeBigBinary: Option[BigInt] = Try(in.bigBinary).toOption
+
+    def splitAtDoubleLinebreaks: Seq[String] = in.split("\n\n")
+    def splitAtDoubleLinebreaksBy[A](f: String => A) = in.split("\n\n").map(f)
+
+    def splitToLinesAtDoubleLinebreaks: Seq[Seq[String]] = in.split("\n\n").map(_.split("\n").toSeq)
+    def splitToLinesAtDoubleLinebreaksBy[A](f: String => A): Seq[Seq[A]] =
+      in.split("\n\n").map(_.split("\n").map(f).toSeq)
   }
 
   implicit class _ZIOOps[R, E, A](private val in: ZIO[R, E, A]) {
@@ -111,8 +118,8 @@ trait Syntax {
 
     /** Map via `f` at each location in the grid, passing the contents and the coordinates to `f` */
     def mapGridWithLocation[C](
-        f: (B, (Int, Int)) => C)(
-        implicit ev: A <:< IndexedSeq[B]): Grid[C] = in.zipWithIndex.map { case (inner, y) =>
+                                  f: (B, (Int, Int)) => C)(
+                                  implicit ev: A <:< IndexedSeq[B]): Grid[C] = in.zipWithIndex.map { case (inner, y) =>
       inner.zipWithIndex.map { case (b, x) => f(b, (x, y)) }
     }
 
