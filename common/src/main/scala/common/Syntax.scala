@@ -1,5 +1,6 @@
 package common
 
+import scala.reflect.ClassTag
 import scala.util.Try
 import zio.{UIO, ZIO}
 import zio.console.Console
@@ -56,6 +57,21 @@ trait Syntax {
     def big: BigInt = BigInt(in)
   }
 
+  implicit class _CharOps(private val in: Char) {
+    /** "Slides" the current char by whatever "shift" it takes to move `from` to `to`
+      *
+      * Example:
+      * 'C'.slide('A', 'D') == 'F', since this op moves 'A' to 'D', and 'C' is two after 'A', so it gets moved to
+      * two after 'D', which is 'F'
+      *
+      * Be careful to not shift to an invalid character!
+      *
+      * NOTA BENE: This does NOT do a circular rotation or alphabet wrapping or anything!  It might not be super
+      * useful as a result, so perhaps remove it if not.
+      */
+    def slide(from: Char, to: Char): Char = (in + to - from).toChar
+  }
+
   implicit class _StringOps(private val in: String) {
     def big: BigInt = BigInt(in)
 
@@ -65,12 +81,16 @@ trait Syntax {
 
     def safeBigBinary: Option[BigInt] = Try(in.bigBinary).toOption
 
-    def splitAtDoubleLinebreaks: Seq[String] = in.split("\n\n")
-    def splitAtDoubleLinebreaksBy[A](f: String => A) = in.split("\n\n").map(f)
+    def mapChars(f: Char => Char): String = in.toSeq.map(f).mkString
 
-    def splitToLinesAtDoubleLinebreaks: Seq[Seq[String]] = in.split("\n\n").map(_.split("\n").toSeq)
-    def splitToLinesAtDoubleLinebreaksBy[A](f: String => A): Seq[Seq[A]] =
-      in.split("\n\n").map(_.split("\n").map(f).toSeq)
+    def splitAtLinebreaks: Seq[String] = in.linesIterator.toSeq
+    def splitAtLinebreaksBy[A: ClassTag](f: String => A): Seq[A] = splitAtLinebreaks.map(f)
+    def splitAtDoubleLinebreaks: Seq[String] = in.split("\n\n").toSeq
+    def splitAtDoubleLinebreaksBy[A: ClassTag](f: String => A): Seq[A] = in.split("\n\n").toSeq.map(f)
+
+    def splitToLinesAtDoubleLinebreaks: Seq[Seq[String]] = in.split("\n\n").toSeq.map(_.split("\n").toSeq)
+    def splitToLinesAtDoubleLinebreaksBy[A: ClassTag](f: String => A): Seq[Seq[A]] =
+      in.split("\n\n").toSeq.map(_.split("\n").map(f).toSeq)
   }
 
   implicit class _ZIOOps[R, E, A](private val in: ZIO[R, E, A]) {
@@ -118,8 +138,10 @@ trait Syntax {
 
     /** Map via `f` at each location in the grid, passing the contents and the coordinates to `f` */
     def mapGridWithLocation[C](
-                                  f: (B, (Int, Int)) => C)(
-                                  implicit ev: A <:< IndexedSeq[B]): Grid[C] = in.zipWithIndex.map { case (inner, y) =>
+        f: (B, (Int, Int)) => C
+    )(
+        implicit ev: A <:< IndexedSeq[B]
+    ): Grid[C] = in.zipWithIndex.map { case (inner, y) =>
       inner.zipWithIndex.map { case (b, x) => f(b, (x, y)) }
     }
 
