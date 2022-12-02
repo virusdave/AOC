@@ -1,11 +1,10 @@
 package codekata2022
 package days
 
-import common.InRegexParserSyntax
 import enumeratum._
 import zio.RIO
 
-object Day02 extends ParserPuzzle with InRegexParserSyntax {
+object Day02 extends ParserPuzzle {
   override type PuzzleOut = Any
   override def dayNum: Int = 2
 

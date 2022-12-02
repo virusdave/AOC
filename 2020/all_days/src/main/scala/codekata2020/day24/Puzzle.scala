@@ -2,11 +2,12 @@ package codekata2020.day24
 
 import breeze.math.Complex
 import codekata2020._
+import common.InRegexParserSyntax
 import enumeratum.EnumEntry.Lowercase
 import enumeratum._
 import scala.util.parsing.combinator._
 
-object Puzzle extends RegexParsers {
+object Puzzle extends RegexParsers with InRegexParserSyntax {
 
   sealed abstract class Dir(val v: Complex) extends EnumEntry with Lowercase
   object Dir extends Enum[Dir] {
@@ -22,7 +23,7 @@ object Puzzle extends RegexParsers {
   def parseDir: Parser[Dir] = ("e" | "w" | "se" | "sw" | "ne" | "nw") ^^ { s => Dir.withNameLowercaseOnly(s) }
   def parseLine: Parser[List[Dir]] = rep1(parseDir)
 
-  val paths: Seq[Complex] = inputs.map { l => parseAll(parseLine, l).get.map(_.v).sum }
+  val paths: Seq[Complex] = inputs.parseLinesBy(parseLine).map(_.map(_.v).sum)
   val start = paths.foldLeft(Set.empty[Complex]) { case (blacks, tile) =>
     if (!blacks(tile)) (blacks + tile) else (blacks - tile)
   }
@@ -65,7 +66,7 @@ object Puzzle extends RegexParsers {
     }.zio
   }
 
-  private def inputs = in.linesIterator.toIndexedSeq
+  private def inputs = in
   //  private def inputs = in.split("\n\n").toIndexedSeq
 
   private lazy val in2 =

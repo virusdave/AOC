@@ -15,9 +15,7 @@ object Day16 extends ParserPuzzle {
   }
   override def part1: Option[Part] = new Part {
     override def solution: RIO[Any, Any] =
-      inputs
-        .toSeq
-        .map(parseAll(lines, _).get)
+      inputs.parseLinesBy(lines)
         .filter { case (_, sueAttr) =>
           sueAttr.forall { case (k, v) => target.get(k).contains(v) }
         }
@@ -25,9 +23,7 @@ object Day16 extends ParserPuzzle {
   }.some
   override def part2: Option[Part] = new Part {
     override def solution: RIO[Any, Any] =
-      inputs
-        .toSeq
-        .map(parseAll(lines, _).get)
+      inputs.parseLinesBy(lines)
         .filter { case (_, sueAttr) =>
           sueAttr.forall {
             case (k, v) =>
@@ -56,7 +52,7 @@ object Day16 extends ParserPuzzle {
     "perfumes"    -> 1
   )
 
-  def inputs = in.linesIterator
+  def inputs = in
 
   val in2 = ""
   val in3 = ""

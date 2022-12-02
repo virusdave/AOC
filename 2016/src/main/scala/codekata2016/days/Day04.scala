@@ -25,12 +25,12 @@ object Day04 extends ParserPuzzle {
 
   override def part1: Option[Part] = new Part {
     override def solution: RIO[Any, Any] =
-      inputs.linesIterator.toList.map(parseAll(line, _).get).filter(_.isValid).map(_.sector).sum
+      inputs.parseLinesBy(line).filter(_.isValid).map(_.sector).sum
         .zio
   }.some
   override def part2: Option[Part] = new Part {
     override def solution: RIO[Any, Any] =
-      inputs.linesIterator.toList.map(parseAll(line, _).get).filter(_.isValid).map(r => r.decode -> r.sector)
+      inputs.parseLinesBy(line).filter(_.isValid).map(r => r.decode -> r.sector)
         .filter(_._1 == "northpole object storage")
         .zio
   }.some

@@ -18,7 +18,7 @@ object Day09 extends ParserPuzzle {
     }
 
     override def solution: RIO[Any, Any] =
-      inputs.linesIterator.toSeq.map(parseAll(lines, _).getOrFail).map(x => x.length /*-> x*/ ).zio
+      inputs.parseLinesBy(lines).map(x => x.length /*-> x*/ ).zio
   }.some
 
   override def part2: Option[Part] = new Part {
@@ -35,8 +35,7 @@ object Day09 extends ParserPuzzle {
     }
 
     override def solution: RIO[Any, Any] =
-      inputs.linesIterator.toSeq.map(parseAll(lines, _).getOrFail).map(x => x.map(_.size).sum /*-> x*/ ).mkString(
-        "\n").zio
+      inputs.parseLinesBy(lines).map(x => x.map(_.size).sum /*-> x*/ ).mkString("\n").zio
   }.some
 
   def inputs = in3

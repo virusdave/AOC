@@ -15,10 +15,10 @@ object Day03 extends ParserPuzzle {
 
   override def part1: Option[Part] = new Part {
 
-    override def solution: RIO[Any, Any] =
-      inputs.linesIterator.toList
-        .map(l => parseAll(line, l).get).count(_.valid)
+    override def solution: RIO[Any, Any] = {
+      inputs.parseLinesBy(line).count(_.valid)
         .zio
+    }
   }.some
   override def part2: Option[Part] = new Part {
     override def solution: RIO[Any, Any] =

@@ -14,7 +14,7 @@ object Day14 extends ParserPuzzle {
       case n ~ s ~ d ~ r => (n, (s, d, r))
     }
 
-  lazy val parsed = inputs.map(parseAll(line, _).get).toMap
+  lazy val parsed = inputs.parseLinesBy(line).toMap
   lazy val deers = parsed.keys.toSeq
 
   val secs = 2503
@@ -37,7 +37,7 @@ object Day14 extends ParserPuzzle {
     }.groupBy(_._1).view.mapValues(_.map(_._2).sum).toMap.maxBy(_._2).zio
   }.some
 
-  def inputs = in2.linesIterator
+  def inputs = in2
 
   val in2 = """Comet can fly 14 km/s for 10 seconds, but then must rest for 127 seconds.
               |Dancer can fly 16 km/s for 11 seconds, but then must rest for 162 seconds.""".stripMargin

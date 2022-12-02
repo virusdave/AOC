@@ -1,5 +1,6 @@
 package codekata2021
 
+import common.InRegexParserSyntax
 import scala.util.parsing.combinator.RegexParsers
 import zio.{RIO, ZEnv}
 
@@ -16,4 +17,4 @@ trait Puzzle {
   def in: String
 }
 
-trait ParserPuzzle extends Puzzle with RegexParsers
+trait ParserPuzzle extends Puzzle with RegexParsers with InRegexParserSyntax

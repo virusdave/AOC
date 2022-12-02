@@ -38,7 +38,7 @@ object Day08 extends ParserPuzzle {
   }
 
   private val board = Grid.fill2d(7, 3)(false)
-  private def go = inputs.linesIterator.map(parseAll(lines, _).getOrFail)
+  private def go = inputs.parseLinesBy(lines)
     .foldLeft(board) { case (b, op) =>
       op.apply(b) //.tap(_.show(if (_) "#" else ".").debug: Unit)
     }

@@ -33,7 +33,7 @@ object Day06 extends ParserPuzzle {
     )
 
     val lights = IndexedSeq.fill(1000, 1000)(false)
-    val parsed = inputs.map { l => parseAll(line, l).get }
+    val parsed = inputs.parseLinesBy(line)
     override def solution = parsed.foldLeft(lights) { case (lights, (op, c1, c2)) =>
       lights.mapGridWithLocation {
         case (v, pos) => if (insideBounds(c1, c2)(pos)) ops(op)(v) else v
@@ -49,7 +49,7 @@ object Day06 extends ParserPuzzle {
     )
 
     val lights = IndexedSeq.fill(1000, 1000)(0)
-    val parsed = inputs.map { l => parseAll(line, l).get }
+    val parsed = inputs.parseLinesBy(line)
     override def solution = parsed.foldLeft(lights) { case (lights, (op, c1, c2)) =>
       lights.mapGridWithLocation {
         case (v, pos) => if (insideBounds(c1, c2)(pos)) ops(op)(v) else v
@@ -57,7 +57,7 @@ object Day06 extends ParserPuzzle {
     }.flatten.sum.zio
   }.some
 
-  def inputs = in.linesIterator
+  def inputs = in
 
   val in2 = Seq(
     "turn on 0,0 through 999,999",

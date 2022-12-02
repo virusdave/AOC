@@ -55,7 +55,7 @@ object Day10 extends ParserPuzzle {
   }
   private val lines: Parser[Either[Value, Bot]] = (valIn ^^ Left.apply) | (botOut ^^ Right.apply)
 
-  private val parsed         = inputs.linesIterator.toList.map(parseAll(lines, _).getOrFail)
+  private val parsed         = inputs.parseLinesBy(lines)
   private val (values, bots) = (parsed.collect { case Left(v) => v }, parsed.collect { case Right(b) => b })
   private val state          = WorldState(Map.empty, bots.map(b => b.id.id -> b).toMap, Map.empty)
   private val finalState     = values.foldLeft(state) { case (s, v) => v.dest.accept(s, v.value) }

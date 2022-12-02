@@ -5,6 +5,7 @@ scala_library(
     srcs = glob(["**/*.scala"]),
     visibility = ["//visibility:public"],
     deps = [
+        "//common:parser_syntax",
         "//common:syntax",
     ],
 )

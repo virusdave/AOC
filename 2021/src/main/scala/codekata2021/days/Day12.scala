@@ -17,7 +17,7 @@ object Day12 extends ParserPuzzle {
 
   override def part1: Option[Part] = new Part {
     override def solution: RIO[Any, Any] = {
-      val lines                       = inputs.map(parseAll(line, _).get)
+      val lines                       = inputs.parseLinesBy(line)
       val paths: Map[Cave, Seq[Cave]] = (lines ++ lines.map(_.swap)).groupBy(_._1).view.mapValues(_.map(_._2)).toMap
       def pathsTo(from: Cave, seen: Set[Small]): BigInt = {
         if (from == Small("end")) 1
@@ -32,7 +32,7 @@ object Day12 extends ParserPuzzle {
 
   override def part2: Option[Part] = new Part {
     override def solution: RIO[Any, Any] = {
-      val lines                       = inputs.map(parseAll(line, _).get)
+      val lines                       = inputs.parseLinesBy(line)
       val paths: Map[Cave, Seq[Cave]] = (lines ++ lines.map(_.swap)).groupBy(_._1).view.mapValues(_.map(_._2)).toMap
       def pathsTo(from: Cave, seen: Set[Small], seenTwice: Option[Small]): BigInt = {
         if (from == Small("end")) 1
@@ -48,7 +48,7 @@ object Day12 extends ParserPuzzle {
     }.zio
   }.some
 
-  def inputs = in2.linesIterator.toSeq
+  def inputs = in2
 
   lazy val in2 =
     """dc-end

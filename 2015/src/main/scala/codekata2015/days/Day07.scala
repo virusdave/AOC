@@ -39,7 +39,7 @@ object Day07 extends ParserPuzzle {
   def line: Parser[(Op, String)] = (lhs <~ "->") ~ ref ^^ { case l ~ i => (l, i.n) }
 
   override def part1: Option[Part] = new Part {
-    val parsed = inputs.map { l => parseAll(line, l).get }
+    val parsed = inputs.parseLinesBy(line)
     val bindings: Map[String, Op] = parsed.map { case (op, dest) => dest -> op }.toMap
 
     def eval(key: String, cache: mutable.Map[String, NUM] = mutable.Map.empty): NUM = {
@@ -62,7 +62,7 @@ object Day07 extends ParserPuzzle {
   }.some
 
   override def part2: Option[Part] = new Part {
-    val parsed = inputs.map { l => parseAll(line, l).get }
+    val parsed = inputs.parseLinesBy(line)
     val bindings: Map[String, Op] =
       parsed.map { case (op, dest) => dest -> op }.toMap ++ Map(
         "b" -> ASSIGN(Lit(16076.toChar))
@@ -87,7 +87,7 @@ object Day07 extends ParserPuzzle {
     override def solution = eval("a").toInt.zio
   }.some
 
-  def inputs = in2.linesIterator
+  def inputs = in2
 
   val in2 =
     """123 -> x

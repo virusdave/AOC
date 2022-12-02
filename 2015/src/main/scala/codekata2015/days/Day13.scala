@@ -15,7 +15,7 @@ object Day13 extends ParserPuzzle {
       case l ~ ud ~ num ~ r => ((l, r), ud * num)
     }
 
-  lazy val parsed = inputs.map(parseAll(line, _).get).toSeq
+  lazy val parsed = inputs.parseLinesBy(line)
   lazy val prefs  = parsed.toMap
   lazy val names  = parsed.map(_._1._1).distinct
 
@@ -58,7 +58,7 @@ object Day13 extends ParserPuzzle {
           .zio
     }.some
 
-  def inputs = in.linesIterator
+  def inputs = in
 
   val in2 = """Alice would gain 54 happiness units by sitting next to Bob.
               |Alice would lose 79 happiness units by sitting next to Carol.

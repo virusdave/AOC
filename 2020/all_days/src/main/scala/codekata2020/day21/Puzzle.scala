@@ -1,18 +1,19 @@
 package codekata2020.day21
 
 import codekata2020._
+import common.InRegexParserSyntax
 import scala.annotation.tailrec
 import scala.util.parsing.combinator._
 
-object Puzzle extends RegexParsers {
-  private val inputs = in.linesIterator.toIndexedSeq
+object Puzzle extends RegexParsers with InRegexParserSyntax {
+  private val inputs = in
   type Ingredient = String
   type Allergen = String
 
   def parser: Parser[(List[Ingredient], List[Allergen])] =
     (rep1("""[a-z]+""".r) <~ "(contains") ~ rep1sep("""[a-z]+""".r, ",") <~ ")" ^^ { case is ~ ws => (is, ws) }
 
-  private val parsed = inputs.map { l => parseAll(parser, l).get }
+  private val parsed = inputs.parseLinesBy(parser)
   private val allIngredients: Set[Ingredient] = parsed.flatMap(_._1).toSet
   private val allergenToPossibleIngredients: Map[Allergen, Set[Ingredient]] =
     parsed.flatMap { case (is, as) => as.map { _ -> is} }.groupBy(_._1)

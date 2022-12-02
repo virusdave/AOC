@@ -23,7 +23,7 @@ object Day15 extends ParserPuzzle {
     }
   }
 
-  lazy val parsed                = inputs.map(parseAll(lines, _).get).toSeq
+  lazy val parsed                = inputs.parseLinesBy(lines)
   lazy val ingredients           = parsed.distinctBy(_._1).sortBy(_._1)
   lazy val ingredientNames       = ingredients.map(_._1)
   lazy val ingredientColumnOrder = ingredients.zipWithIndex.toMap
@@ -78,7 +78,7 @@ object Day15 extends ParserPuzzle {
           .zio
     }.some
 
-  def inputs = in2.linesIterator
+  def inputs = in2
 
   val in2 = """Butterscotch: capacity -1, durability -2, flavor 6, texture 3, calories 8
               |Cinnamon: capacity 2, durability 3, flavor -2, texture -1, calories 3""".stripMargin

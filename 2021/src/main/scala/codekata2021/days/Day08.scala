@@ -38,7 +38,7 @@ object Day08 extends ParserPuzzle {
 
   override def part1: Option[Part] = new Part {
     override def solution: RIO[Any, Any] = {
-      val i    = inputs.map(parseAll(line, _).get)
+      val i    = inputs.parseLinesBy(line)
       val find = Seq(1, 4, 7, 8).map(d => d -> digitToSegment(d).size).map(_._2).toSet
       i.map(_._2.map(_.size).count(find.contains)).sum
     }.zio
@@ -46,7 +46,7 @@ object Day08 extends ParserPuzzle {
 
   override def part2: Option[Part] = new Part {
     override def solution: RIO[Any, Any] = {
-      val i = inputs.map(parseAll(line, _).get)
+      val i = inputs.parseLinesBy(line)
 
       i.map { case patterns -> targets =>
         val segmentsInPattern = patterns.map(_.toSet)
@@ -75,7 +75,7 @@ object Day08 extends ParserPuzzle {
     }.zio
   }.some
 
-  def inputs = in3.linesIterator.toSeq
+  def inputs = in3
 
   lazy val in2 =
     """acedgfb cdfbe gcdfa fbcad dab cefabd cdfgeb eafb cagedb ab | cdfeb fcadb cdfeb cdbaf"""

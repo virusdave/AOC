@@ -20,7 +20,7 @@ object Day07 extends ParserPuzzle {
         case _ => ???  // It would fail on the following inputs: List(_), Nil
       }
 
-      inputs.linesIterator.toSeq.map(parseAll(line, _).get).map { case (l, r) =>
+      inputs.parseLinesBy(line).map { case (l, r) =>
         val (in, out) = r.unzip
         (l :: out, in)
       }.count { case (out, in) =>
@@ -37,7 +37,7 @@ object Day07 extends ParserPuzzle {
       }.distinct
       def aba2bab(s: List[Char]): List[Char] = s.slice(1, 2) ++ s.take(2)
 
-      inputs.linesIterator.toSeq.map(parseAll(line, _).get).map { case (l, r) =>
+      inputs.parseLinesBy(line).map { case (l, r) =>
         val (in, out) = r.unzip
         (l :: out, in)
       }.count { case (out, in) =>

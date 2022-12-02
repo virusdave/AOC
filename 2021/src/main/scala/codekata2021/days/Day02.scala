@@ -1,9 +1,10 @@
 package codekata2021
 package days
 
+import common.InRegexParserSyntax
 import zio.RIO
 
-object Day02 extends ParserPuzzle {
+object Day02 extends ParserPuzzle with InRegexParserSyntax {
   override type PuzzleOut = Any
   override def dayNum: Int = 2
 
@@ -16,7 +17,7 @@ object Day02 extends ParserPuzzle {
     forward | up | down
   }
 
-  val moves = inputs.linesIterator.map(parseAll(line, _).get)
+  val moves = inputs.parseLinesBy(line)
   override def part1: Option[Part] = new Part {
     override def solution: RIO[Any, Any] =
       moves.foldLeft((0, 0)) { case ((px, py), (x, y)) => (px + x, py + y) }.zio.map { case (x, y) => x * y }

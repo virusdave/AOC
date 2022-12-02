@@ -20,7 +20,7 @@ object Day05 extends ParserPuzzle {
 
   override def part1: Option[Part] = new Part {
     override def solution: RIO[Any, Any] = {
-      val lines                     = inputs.linesIterator.map(parseAll(fullLine, _).get).filter(_.horizontalOrVertical)
+      val lines                     = inputs.parseLinesBy(fullLine).filter(_.horizontalOrVertical)
       val hit: Map[(Int, Int), Int] = Map.empty
       lines.foldLeft(hit) { case (hit, line) =>
         val thisLine = line match {
@@ -38,7 +38,7 @@ object Day05 extends ParserPuzzle {
 
   override def part2: Option[Part] = new Part {
     override def solution: RIO[Any, Any] = {
-      val lines                     = inputs.linesIterator.map(parseAll(fullLine, _).get)
+      val lines                     = inputs.parseLinesBy(fullLine)
       val hit: Map[(Int, Int), Int] = Map.empty
       lines.foldLeft(hit) { case (hit, line) =>
         val thisLine = line match {
