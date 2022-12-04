@@ -46,7 +46,7 @@ object All extends App {
 //    days.Day06,
 //    days.Day05,
 //    days.Day04,
-//    days.Day03,
+    days.Day03,
     days.Day02,
     days.Day01,
   ).filter(day => day.part2.orElse(day.part1).isDefined)
