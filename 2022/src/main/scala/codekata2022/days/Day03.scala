@@ -1,11 +1,9 @@
 package codekata2022
 package days
 
-import common.InRegexParserSyntax
 import scala.language.postfixOps
-import zio.RIO
 
-object Day03 extends ParserPuzzle with InRegexParserSyntax {
+object Day03 extends ParserPuzzle {
   override type PuzzleOut = Any
   override def dayNum: Int = 3
 
@@ -14,20 +12,16 @@ object Day03 extends ParserPuzzle with InRegexParserSyntax {
     else if (c >= 'A' && c <= 'Z') c - 'A' + 27
     else ???
 
-  override def part1: Option[Part] = new Part {
-    override def solution: RIO[Any, Any] = {
-      inputs.splitAtLinebreaksBy { s =>
-        val (l, r) = s.splitAt(s.length/2)
-        l.toSet intersect r.toSet head
-      }.map(cToScore).sum
-    }.zio
-  }.some
+  override def part1: Option[Part] = PuzzlePart({
+    inputs.splitAtLinebreaksBy { s =>
+      val (l, r) = s.splitAt(s.length / 2)
+      l.toSet intersect r.toSet head
+    }.map(cToScore).sum
+  }.zio).some
 
-  override def part2: Option[Part] = new Part {
-    override def solution: RIO[Any, Any] = {
-      inputs.linesIterator.grouped(3).map(_.map(_.toSet).reduce(_ intersect _).head).map(cToScore).sum
-    }.zio
-  }.some
+  override def part2: Option[Part] = PuzzlePart({
+    inputs.linesIterator.grouped(3).map(_.map(_.toSet).reduce(_ intersect _).head).map(cToScore).sum
+  }.zio).some
 
   private def inputs = in2
 

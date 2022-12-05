@@ -2,7 +2,6 @@ package codekata2022
 package days
 
 import enumeratum._
-import zio.RIO
 
 object Day02 extends ParserPuzzle {
   override type PuzzleOut = Any
@@ -43,24 +42,20 @@ object Day02 extends ParserPuzzle {
 
   private val them: Parser[Move] = "[ABC]".r ^^ Move.withName
 
-  override def part1: Option[Part] = new Part {
-    override def solution: RIO[Any, Any] = {
-      def XtoA(c: String): String = c.mapChars(_.slide('X', 'A'))
-      val us: Parser[Move] = "[XYZ]".r ^^ XtoA ^^ Move.withName
-      val line: Parser[(Move, Move)] = them ~ us ^^ (_.toTuple)
-      val rounds = inputs.parseLinesBy(line)
-      rounds.map { case t -> m => m.shapeScore + m.against(t).outcomeScore }.sum
-    }.zio
-  }.some
+  override def part1: Option[Part] = PuzzlePart({
+    def XtoA(c: String): String = c.mapChars(_.slide('X', 'A'))
+    val us: Parser[Move] = "[XYZ]".r ^^ XtoA ^^ Move.withName
+    val line: Parser[(Move, Move)] = them ~ us ^^ (_.toTuple)
+    val rounds = inputs.parseLinesBy(line)
+    rounds.map { case t -> m => m.shapeScore + m.against(t).outcomeScore }.sum
+  }.zio).some
 
-  override def part2: Option[Part] = new Part {
-    override def solution: RIO[Any, Any] = {
-      val outcome: Parser[Outcome] = "[XYZ]".r ^^ Outcome.withName
-      val line: Parser[(Move, Move)] = them ~ outcome ^^ { case t ~ o => t -> o.against(t) }
-      val rounds = inputs.parseLinesBy(line)
-      rounds.map { case t -> m => m.shapeScore + m.against(t).outcomeScore }.sum
-    }.zio
-  }.some
+  override def part2: Option[Part] = PuzzlePart({
+    val outcome: Parser[Outcome] = "[XYZ]".r ^^ Outcome.withName
+    val line: Parser[(Move, Move)] = them ~ outcome ^^ { case t ~ o => t -> o.against(t) }
+    val rounds = inputs.parseLinesBy(line)
+    rounds.map { case t -> m => m.shapeScore + m.against(t).outcomeScore }.sum
+  }.zio).some
 
   private def inputs = in2
 
