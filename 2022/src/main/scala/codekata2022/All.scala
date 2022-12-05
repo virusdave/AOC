@@ -44,7 +44,7 @@ object All extends App {
 //    days.Day08,
 //    days.Day07,
 //    days.Day06,
-//    days.Day05,
+    days.Day05,
     days.Day04,
     days.Day03,
     days.Day02,
