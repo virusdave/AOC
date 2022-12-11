@@ -31,6 +31,10 @@ trait Syntax {
     def zio: UIO[A] = UIO.succeed(in)
 
     def debug: A = tap(System.out.println)
+    def debugSameLine: A = {
+      System.out.print("\r")
+      tap(System.out.print)
+    }
   }
 
   implicit class _OptionOps[A](private val in: Option[A]) {
@@ -83,14 +87,16 @@ trait Syntax {
 
     def mapChars(f: Char => Char): String = in.toSeq.map(f).mkString
 
-    def splitAtLinebreaks: Seq[String] = in.linesIterator.toSeq
-    def splitAtLinebreaksBy[A: ClassTag](f: String => A): Seq[A] = splitAtLinebreaks.map(f)
-    def splitAtDoubleLinebreaks: Seq[String] = in.split("\n\n").toSeq
-    def splitAtDoubleLinebreaksBy[A: ClassTag](f: String => A): Seq[A] = in.split("\n\n").toSeq.map(f)
+    def splitAtLinebreaks: IndexedSeq[String] = in.linesIterator.toIndexedSeq
+    def splitAtLinebreaksBy[A: ClassTag](f: String => A): IndexedSeq[A] = splitAtLinebreaks.map(f)
+    def splitAtDoubleLinebreaks: IndexedSeq[String] = in.split("\n\n").toIndexedSeq
+    def splitAtDoubleLinebreaksBy[A: ClassTag](f: String => A): IndexedSeq[A] =
+      in.split("\n\n").toIndexedSeq.map(f)
 
-    def splitToLinesAtDoubleLinebreaks: Seq[Seq[String]] = in.split("\n\n").toSeq.map(_.split("\n").toSeq)
-    def splitToLinesAtDoubleLinebreaksBy[A: ClassTag](f: String => A): Seq[Seq[A]] =
-      in.split("\n\n").toSeq.map(_.split("\n").map(f).toSeq)
+    def splitToLinesAtDoubleLinebreaks: IndexedSeq[IndexedSeq[String]] =
+      in.split("\n\n").toIndexedSeq.map(_.split("\n").toIndexedSeq)
+    def splitToLinesAtDoubleLinebreaksBy[A: ClassTag](f: String => A): IndexedSeq[IndexedSeq[A]] =
+      in.split("\n\n").toIndexedSeq.map(_.split("\n").map(f).toIndexedSeq)
   }
 
   implicit class _ZIOOps[R, E, A](private val in: ZIO[R, E, A]) {

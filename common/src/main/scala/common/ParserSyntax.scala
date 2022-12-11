@@ -14,6 +14,8 @@ trait ParserSyntax extends Syntax {
 
 trait InRegexParserSyntax { this: RegexParsers =>
   implicit class _ParserStringOps(in: String) extends ParserSyntax {
-    def parseLinesBy[A: ClassTag](p: Parser[A]): Seq[A] = in.splitAtLinebreaksBy(parseAll(p, _).getOrFail)
+    def parseLinesBy[A: ClassTag](p: Parser[A]): IndexedSeq[A] = in.splitAtLinebreaksBy(parseAll(p, _).getOrFail)
+    def splitAtDoubleLinebreaksAndParseChunkBy[A: ClassTag](p: Parser[A]): IndexedSeq[A] =
+      in.splitAtDoubleLinebreaksBy(parseAll(p, _).getOrFail)
   }
 }
