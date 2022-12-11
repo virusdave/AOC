@@ -23,7 +23,7 @@ object All extends App {
     _ <- putStrLn(s"   Which Took: [${(mid - start).millis.render}]")
 
 
-    p1 <- puzzle.part1.fold2(ZIO.unit, p => p.solution.shush(silent = true))
+    p1 <- puzzle.part1.fold2(ZIO.unit, p => p.solution/*.shush(silent = true)*/)
     _ <- putStrLn(s" Part 1: ${p1}")
 
 
