@@ -60,6 +60,9 @@ trait Syntax {
   implicit class _IntOps(private val in: Int) {
     def big: BigInt = BigInt(in)
   }
+  implicit class _LongOps(private val in: Long) {
+    def big: BigInt = BigInt(in)
+  }
 
   implicit class _CharOps(private val in: Char) {
     /** "Slides" the current char by whatever "shift" it takes to move `from` to `to`
