@@ -5,7 +5,7 @@ import common.InRegexParserSyntax
 
 object Latest extends ParserPuzzle with InRegexParserSyntax {
   override type PuzzleOut = Any
-  override def dayNum: Int = 11
+  override def dayNum: Int = 12
 
   private val word: Parser[String]   = "[a-zA-Z]+".r
   private val num: Parser[Int]       = "[0-9]+".r ^^ (_.toInt)

@@ -38,7 +38,7 @@ object All extends App {
 //    days.Day14,
 //    days.Day13,
 //    days.Day12,
-//    days.Day11,
+    days.Day11,
     days.Day10,
     days.Day09,
     days.Day08,
