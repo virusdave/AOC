@@ -57,6 +57,14 @@ trait Syntax {
     def combinationsWithRepetition(n: Int): Iterator[Seq[A]] = combs(n, in.toList).map(_.toSeq)
   }
 
+  implicit class _HomogeneousPairOps[A](private val in: (A, A)) {
+    def min(implicit ev: Numeric[A]): A = ev.min(in._1, in._2)
+    def max(implicit ev: Numeric[A]): A = ev.max(in._1, in._2)
+  }
+
+  implicit class _PairOps[A, B](private val in: (A, B)) {
+  }
+
   implicit class _IntOps(private val in: Int) {
     def big: BigInt = BigInt(in)
   }
