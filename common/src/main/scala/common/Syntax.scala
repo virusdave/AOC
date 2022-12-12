@@ -60,6 +60,10 @@ trait Syntax {
   implicit class _HomogeneousPairOps[A](private val in: (A, A)) {
     def min(implicit ev: Numeric[A]): A = ev.min(in._1, in._2)
     def max(implicit ev: Numeric[A]): A = ev.max(in._1, in._2)
+    def +(that: (A, A))(implicit ev: Numeric[A]): (A, A) =
+      (ev.plus(in._1, that._1), ev.plus(in._2, that._2))
+    def -(that: (A, A))(implicit ev: Numeric[A]): (A, A) =
+      (ev.minus(in._1, that._1), ev.minus(in._2, that._2))
   }
 
   implicit class _PairOps[A, B](private val in: (A, B)) {
@@ -121,6 +125,7 @@ trait Syntax {
     /** Safely get the contents of (x,y), or None if that's out of bounds. */
     def get(x: Int, y: Int): Option[B] =
       if (y >= 0 && y < in.length && x >= 0 && x < in(y).length) in(y)(x).some else None
+    def get(xy: (Int, Int)): Option[B] = get(xy._1, xy._2)
 
     def getOrElse(x: Int, y: Int, orElse: B): B = get(x, y).getOrElse(orElse)
 
@@ -150,6 +155,7 @@ trait Syntax {
       val (mx, my) = bounds
       (x, y).some.filter { case (x, y) => x >= 0 && x < mx && y >= 0 && y < my }
     }
+    def clip(xy: (Int, Int)): Option[(Int, Int)] = clip(xy._1, xy._2)
 
     def bounds: (Int, Int) = (in(0).length, in.length)
 
