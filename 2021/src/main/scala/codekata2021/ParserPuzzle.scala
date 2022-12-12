@@ -4,9 +4,7 @@ import common.InRegexParserSyntax
 import scala.util.parsing.combinator.RegexParsers
 import zio.{RIO, ZEnv}
 
-trait PuzzlePart[A] {
-  def solution: RIO[ZEnv, A]
-}
+case class PuzzlePart[+A](solution: RIO[ZEnv, A])
 
 trait Puzzle {
   type PuzzleOut

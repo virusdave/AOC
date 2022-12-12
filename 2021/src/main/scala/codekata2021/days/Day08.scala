@@ -1,20 +1,16 @@
 package codekata2021
 package days
 
-import zio.RIO
-
 object Day08 extends ParserPuzzle {
   override type PuzzleOut = Any
   override def dayNum: Int = 8
 
-  val num: Parser[Int]                               = "[0-9]+".r ^^ (_.toInt)
-  val segment: Parser[Char]                          = "[a-g]".r ^^ (_.head)
-  val segments: Parser[Seq[Char]]                    = "[a-g]+".r ^^ (_.toSeq)
-  val patterns: Parser[Seq[Seq[Char]]]               = repN(10, segments)
-  val targets: Parser[Seq[Seq[Char]]]                = repN(4, segments)
-  val line: Parser[(Seq[Seq[Char]], Seq[Seq[Char]])] = patterns ~ ("|" ~> targets) ^^ { case l ~ r => l -> r }
+  private val segments: Parser[Seq[Char]]                    = "[a-g]+".r ^^ (_.toSeq)
+  private val patterns: Parser[Seq[Seq[Char]]]               = repN(10, segments)
+  private val targets: Parser[Seq[Seq[Char]]]                = repN(4, segments)
+  private val line: Parser[(Seq[Seq[Char]], Seq[Seq[Char]])] = patterns ~ ("|" ~> targets) ^^ { case l ~ r => l -> r }
 
-  val digitToSegment: Map[Int, Seq[Char]] = Map(
+  private val digitToSegment: Map[Int, Seq[Char]] = Map(
     0 -> Seq('a', 'b', 'c', 'e', 'f', 'g'),
     1 -> Seq('c', 'f'),
     2 -> Seq('a', 'c', 'd', 'e', 'g'),
@@ -26,61 +22,53 @@ object Day08 extends ParserPuzzle {
     8 -> ('a' to 'g'),
     9 -> Seq('a', 'b', 'c', 'd', 'f', 'g'),
   )
-  val segmentSetToDigit: Map[Set[Char], Int] = digitToSegment.map { case s -> ds => ds.toSet -> s }
-  val segmentSets: Seq[Set[Char]]            = segmentSetToDigit.keys.toSeq
-  val segmentToDigit: Map[Char, Seq[Int]] = digitToSegment.toSeq.flatMap { case d -> segs =>
+  private val segmentSetToDigit: Map[Set[Char], Int] = digitToSegment.map { case s -> ds => ds.toSet -> s }
+  private val segmentToDigit: Map[Char, Seq[Int]] = digitToSegment.toSeq.flatMap { case d -> segs =>
     segs.map(_ -> d)
   }.groupBy(_._1).view.mapValues(_.map(_._2)).toMap
 
-  val segmentToDigitCount: Map[Char, Int] = segmentToDigit.map { case k -> v => k -> v.size }
-  val digitToSegmentDigitCountSet: Map[Int, Seq[Int]] =
-    digitToSegment.view.mapValues(ss => ss.map(segmentToDigitCount)).toMap
+  private val segmentToDigitCount: Map[Char, Int] = segmentToDigit.map { case k -> v => k -> v.size }
 
-  override def part1: Option[Part] = new Part {
-    override def solution: RIO[Any, Any] = {
-      val i    = inputs.parseLinesBy(line)
-      val find = Seq(1, 4, 7, 8).map(d => d -> digitToSegment(d).size).map(_._2).toSet
-      i.map(_._2.map(_.size).count(find.contains)).sum
-    }.zio
-  }.some
+  private val i = inputs.parseLinesBy(line)
 
-  override def part2: Option[Part] = new Part {
-    override def solution: RIO[Any, Any] = {
-      val i = inputs.parseLinesBy(line)
+  override def part1: Option[Part] = PuzzlePart({
+    val find = Seq(1, 4, 7, 8).map(d => d -> digitToSegment(d).size).map(_._2).toSet
+    i.map(_._2.map(_.size).count(find.contains)).sum
+  }.zio).some
 
-      i.map { case patterns -> targets =>
-        val segmentsInPattern = patterns.map(_.toSet)
+  override def part2: Option[Part] = PuzzlePart({
+    i.map { case patterns -> targets =>
+      val segmentsInPattern = patterns.map(_.toSet)
 
-        val segCountsInPattern: Map[Char, Int] =
-          ('a' to 'g').map(s => s -> segmentsInPattern.count(_.contains(s))).toMap
-        val maybeSegMapping: Map[Char /*pattern*/, Char /*segment*/ ] =
-          segCountsInPattern.map { case c -> n =>
-            c -> (segmentToDigitCount.filter(_._2 == n).keys.toSeq match {
-              case Seq(s) => s
-              case _      =>
-                // This is either conflicting 7-rep or 8-rep segments.
-                // Does this appear in the number "4", which contains 4 segments?  If so then it is
-                // 'd' if 7-rep or 'c' if 8-rep.  If it's not in the number "4", then it's likewise 'g' or 'a'
-                // respectively.  Determined by staring at the segment arrangements for way too long.
-                if (patterns.filter(_.size == 4).flatten.contains(c)) {
-                  if (n == 7) 'd' else 'c'
-                } else {
-                  if (n == 7) 'g' else 'a'
-                }
-            })
-          }
+      val segCountsInPattern: Map[Char, Int] =
+        ('a' to 'g').map(s => s -> segmentsInPattern.count(_.contains(s))).toMap
+      val maybeSegMapping: Map[Char /*pattern*/ , Char /*segment*/ ] =
+        segCountsInPattern.map { case c -> n =>
+          c -> (segmentToDigitCount.filter(_._2 == n).keys.toSeq match {
+            case Seq(s) => s
+            case _ =>
+              // This is either conflicting 7-rep or 8-rep segments.
+              // Does this appear in the number "4", which contains 4 segments?  If so then it is
+              // 'd' if 7-rep or 'c' if 8-rep.  If it's not in the number "4", then it's likewise 'g' or 'a'
+              // respectively.  Determined by staring at the segment arrangements for way too long.
+              if (patterns.filter(_.size == 4).flatten.contains(c)) {
+                if (n == 7) 'd' else 'c'
+              } else {
+                if (n == 7) 'g' else 'a'
+              }
+          })
+        }
 
-        targets.map(_.map(maybeSegMapping).toSet.|>(segmentSetToDigit)).mkString.toInt
-      }.sum
-    }.zio
-  }.some
+      targets.map(_.map(maybeSegMapping).toSet.|>(segmentSetToDigit)).mkString.toInt
+    }.sum
+  }.zio).some
 
-  def inputs = in3
+  private def inputs = in3
 
-  lazy val in2 =
+  private lazy val in2 =
     """acedgfb cdfbe gcdfa fbcad dab cefabd cdfgeb eafb cagedb ab | cdfeb fcadb cdfeb cdbaf"""
 
-  lazy val in3 =
+  private lazy val in3 =
     """be cfbegad cbdgef fgaecd cgeb fdcge agebfd fecdb fabcd edb | fdgacbe cefdb cefbgd gcbe
       |edbfga begcd cbg gc gcadebf fbgde acbgfd abcde gfcbed gfec | fcgedb cgb dgebacf gc
       |fgaebd cg bdaec gdafb agbcfd gdcbef bgcad gfac gcb cdgabef | cg cg fdcagb cbg

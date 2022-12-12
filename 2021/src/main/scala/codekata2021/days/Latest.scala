@@ -1,7 +1,6 @@
 package codekata2021
 package days
 
-import zio.RIO
 
 object Latest extends ParserPuzzle {
   override type PuzzleOut = Any
@@ -12,26 +11,22 @@ object Latest extends ParserPuzzle {
   private val neg: Parser[Int]       = "-" ~> num ^^ (-_)
   private val signedNum: Parser[Int] = num | neg
 
-  override def part1: Option[Part] = new Part {
-    override def solution: RIO[Any, Any] = {
-      ()
-      ()
-    }.zio
-  }.some
+  override def part1: Option[Part] = PuzzlePart({
+    ()
+    ()
+  }.zio).some
 
-  override def part2: Option[Part] = new Part {
-    override def solution: RIO[Any, Any] = {
-      ()
-      ()
-    }.zio
-  }.some
+  override def part2: Option[Part] = PuzzlePart({
+    ()
+    ()
+  }.zio).some
 
-  def inputs = in2
+  private def inputs = in2
 
-  lazy val in2 =
+  private lazy val in2 =
     """"""
 
-  lazy val in3 =
+  private lazy val in3 =
     """"""
 
   override def in: String =

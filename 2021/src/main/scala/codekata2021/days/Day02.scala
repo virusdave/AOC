@@ -1,15 +1,12 @@
 package codekata2021
 package days
 
-import common.InRegexParserSyntax
-import zio.RIO
-
-object Day02 extends ParserPuzzle with InRegexParserSyntax {
+object Day02 extends ParserPuzzle {
   override type PuzzleOut = Any
   override def dayNum: Int = 2
 
-  type Move = (Int, Int)
-  val line: Parser[Move] = {
+  private type Move = (Int, Int)
+  private val line: Parser[Move] = {
     val num: Parser[Int]      = "[0-9]+".r ^^ (_.toInt)
     val forward: Parser[Move] = "forward" ~> num ^^ { n => (n, 0) }
     val up: Parser[Move]      = "up" ~> num ^^ { n => (0, -n) }
@@ -17,31 +14,27 @@ object Day02 extends ParserPuzzle with InRegexParserSyntax {
     forward | up | down
   }
 
-  val moves = inputs.parseLinesBy(line)
-  override def part1: Option[Part] = new Part {
-    override def solution: RIO[Any, Any] =
-      moves.foldLeft((0, 0)) { case ((px, py), (x, y)) => (px + x, py + y) }.zio.map { case (x, y) => x * y }
+  private val moves = inputs.parseLinesBy(line)
+
+  override def part1: Option[Part] = PuzzlePart {
+    moves.foldLeft((0, 0)) { case ((px, py), (x, y)) => (px + x, py + y) }.zio.map { case (x, y) => x * y }
   }.some
 
-  override def part2: Option[Part] = new Part {
-    override def solution: RIO[Any, Any] =
-      moves.foldLeft((0, 0, 0)) { case ((horizontal, depth, aim), (f, d)) =>
-        (horizontal + f, depth + aim * f, aim + d)
-      }.zio.map { case (x, y, _) => x * y }
+  override def part2: Option[Part] = PuzzlePart {
+    moves.foldLeft((0, 0, 0)) { case ((horizontal, depth, aim), (f, d)) =>
+      (horizontal + f, depth + aim * f, aim + d)
+    }.zio.map { case (x, y, _) => x * y }
   }.some
 
-  def inputs = in
+  private def inputs = in
 
-  lazy val in2 =
+  private lazy val in2 =
     """forward 5
       |down 5
       |forward 8
       |up 3
       |down 8
       |forward 2""".stripMargin
-
-  lazy val in3 =
-    """"""
 
   override def in: String =
     """""".stripMargin
