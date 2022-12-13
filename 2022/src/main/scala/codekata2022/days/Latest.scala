@@ -1,11 +1,9 @@
 package codekata2022
 package days
 
-import common.InRegexParserSyntax
-
-object Latest extends ParserPuzzle with InRegexParserSyntax {
+object Latest extends ParserPuzzle {
   override type PuzzleOut = Any
-  override def dayNum: Int = 13
+  override def dayNum: Int = 14
 
   private val word: Parser[String]   = "[a-zA-Z]+".r
   private val num: Parser[Int]       = "[0-9]+".r ^^ (_.toInt)
@@ -14,11 +12,9 @@ object Latest extends ParserPuzzle with InRegexParserSyntax {
 
   override def part1: Option[Part] = PuzzlePart({
     ()
-    ()
   }.zio).some
 
   override def part2: Option[Part] = PuzzlePart({
-    ()
     ()
   }.zio).some
 
