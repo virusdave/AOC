@@ -10,6 +10,7 @@ trait Syntax {
   implicit class _AnyOps[A](private val in: A) {
     /** Lift a value into an [[Option]], but with better type inference than `Some(in)` */
     def some: Option[A] = Option(in)
+    def when(pred: A => Boolean): Option[A] = in.some.filter(pred)
 
     /** Pipe operator.  Pipe a value `v` into function `f` with `v |> f`. */
     def |>[B](f: A => B): B = pipe(f)
@@ -60,10 +61,24 @@ trait Syntax {
   implicit class _HomogeneousPairOps[A](private val in: (A, A)) {
     def min(implicit ev: Numeric[A]): A = ev.min(in._1, in._2)
     def max(implicit ev: Numeric[A]): A = ev.max(in._1, in._2)
+    def abs(implicit ev: Numeric[A]): (A, A) = ev.abs(in._1) -> ev.abs(in._2)
+    def sum(implicit ev: Numeric[A]): A = ev.plus(in._1, in._2)
+    def product(implicit ev: Numeric[A]): A = ev.times(in._1, in._2)
     def +(that: (A, A))(implicit ev: Numeric[A]): (A, A) =
       (ev.plus(in._1, that._1), ev.plus(in._2, that._2))
     def -(that: (A, A))(implicit ev: Numeric[A]): (A, A) =
       (ev.minus(in._1, that._1), ev.minus(in._2, that._2))
+    def unary_-(implicit ev: Numeric[A]): (A, A) = (ev.negate(in._1), ev.negate(in._2))
+  }
+
+  implicit class _HomogeneousTripleOps[A](private val in: (A, A, A)) {
+    def min(implicit ev: Numeric[A]): A = ev.min(ev.min(in._1, in._2), in._3)
+    def max(implicit ev: Numeric[A]): A = ev.max(ev.max(in._1, in._2), in._3)
+    def +(that: (A, A, A))(implicit ev: Numeric[A]): (A, A, A) =
+      (ev.plus(in._1, that._1), ev.plus(in._2, that._2), ev.plus(in._3, that._3))
+    def -(that: (A, A, A))(implicit ev: Numeric[A]): (A, A, A) =
+      (ev.minus(in._1, that._1), ev.minus(in._2, that._2), ev.minus(in._3, that._3))
+    def unary_-(implicit ev: Numeric[A]): (A, A, A) = (ev.negate(in._1), ev.negate(in._2), ev.negate(in._3))
   }
 
   implicit class _PairOps[A, B](private val in: (A, B)) {
