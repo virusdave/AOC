@@ -3,7 +3,7 @@ package days
 
 object Latest extends ParserPuzzle {
   override type PuzzleOut = Any
-  override def dayNum: Int = 16
+  override def dayNum: Int = 17
 
   private val word: Parser[String]   = "[a-zA-Z]+".r
   private val num: Parser[Int]       = "[0-9]+".r ^^ (_.toInt)
