@@ -45,7 +45,10 @@ def _deps():
         maven.artifact("org.hamcrest", "hamcrest-library", "2.2"),
         maven.artifact("org.leibnizcenter", "probabilistic-earley-parser", "0.9.12"),
         maven.artifact("org.scalanlp", _scala("breeze"), "1.0"),
-        maven.artifact("org.scala-graph", _scala("graph-core"), "1.13.2"),
+        maven.artifact("org.scala-graph", _scala("graph-constrained"), "1.13.2"),  # Yes all different patch versions :(
+        maven.artifact("org.scala-graph", _scala("graph-core"), "1.13.5"),
+        maven.artifact("org.scala-graph", _scala("graph-dot"), "1.13.3"),
+        maven.artifact("org.scala-graph", _scala("graph-json"), "1.13.0"),
         maven.artifact("org.scala-lang.modules", _scala("scala-parallel-collections"), "1.0.4"),
         maven.artifact("org.scala-lang.modules", _scala("scala-parser-combinators"), "1.1.2"),
         maven.artifact("org.typelevel", _scala("cats-core"), _VER_CATS),
