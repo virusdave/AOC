@@ -10,7 +10,7 @@ object Day18 extends ParserPuzzle {
   private type Loc = (Int, Int, Int)
 
   private val num: Parser[Int] = "[0-9]+".r ^^ (_.toInt)
-  private val line: Parser[Loc] = (num <~ ",") ~ (num <~ ",") ~ num ^^ (_.toTuple)
+  private val line: Parser[Loc] = (num <~ ",") ~ (num <~ ",") ~ num ^^ (_.toTuple3)
 
   private val parsed: IndexedSeq[Loc] = inputs.parseLinesBy(line)
   private val sixNeighborDeltas: Seq[Loc] = for {
