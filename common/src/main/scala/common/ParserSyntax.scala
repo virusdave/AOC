@@ -10,6 +10,9 @@ trait ParserSyntax extends Syntax {
   implicit class _ParserTildeOps[A, B](in: Parsers#`~`[A, B]) {
     def toTuple: (A, B) = in._1 -> in._2
   }
+  implicit class _ParserTilde3Ops[A,B,C](in: Parsers#`~`[Parsers#`~`[A, B], C]) {
+    def toTuple3: (A, B, C) = (in._1._1, in._1._2, in._2)
+  }
 }
 
 trait InRegexParserSyntax { this: RegexParsers =>
