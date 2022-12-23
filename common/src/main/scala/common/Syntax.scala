@@ -56,9 +56,14 @@ trait Syntax {
       })
     }
     def combinationsWithRepetition(n: Int): Iterator[Seq[A]] = combs(n, in.toList).map(_.toSeq)
+    def bounds(implicit ev: Ordering[A]): (A, A) = (in.min, in.max)
   }
 
   implicit class _HomogeneousPairOps[A](private val in: (A, A)) {
+    def toLongs(implicit ev: Numeric[A]): (Long, Long) = ev.toLong(in._1) -> ev.toLong(in._2)
+    def toInts(implicit ev: Numeric[A]): (Int, Int) = ev.toInt(in._1) -> ev.toInt(in._2)
+    def toDoubles(implicit ev: Numeric[A]): (Double, Double) = ev.toDouble(in._1) -> ev.toDouble(in._2)
+    def toBigInts(implicit ev: Numeric[A]): (BigInt, BigInt) = ev.toLong(in._1).big -> ev.toLong(in._2).big
     def min(implicit ev: Numeric[A]): A = ev.min(in._1, in._2)
     def max(implicit ev: Numeric[A]): A = ev.max(in._1, in._2)
     def abs(implicit ev: Numeric[A]): (A, A) = ev.abs(in._1) -> ev.abs(in._2)
@@ -74,6 +79,8 @@ trait Syntax {
   implicit class _HomogeneousTripleOps[A](private val in: (A, A, A)) {
     def min(implicit ev: Numeric[A]): A = ev.min(ev.min(in._1, in._2), in._3)
     def max(implicit ev: Numeric[A]): A = ev.max(ev.max(in._1, in._2), in._3)
+    def abs(implicit ev: Numeric[A]): (A, A, A) = (ev.abs(in._1), ev.abs(in._2), ev.abs(in._3))
+    def sum(implicit ev: Numeric[A]): A = ev.plus(ev.plus(in._1, in._2), in._3)
     def +(that: (A, A, A))(implicit ev: Numeric[A]): (A, A, A) =
       (ev.plus(in._1, that._1), ev.plus(in._2, that._2), ev.plus(in._3, that._3))
     def -(that: (A, A, A))(implicit ev: Numeric[A]): (A, A, A) =
@@ -200,6 +207,11 @@ trait Syntax {
   type Grid[A] = IndexedSeq[IndexedSeq[A]]
   implicit class GridCompanionOps(in: IndexedSeq.type) {
     def fill2d[A](x: Int, y: Int)(a: => A): Grid[A] = in.fill(y, x)(a)
+    def tabulate2d[A](x: Int, y: Int, f: (Int, Int) => A): Grid[A] = tabulate2d(x, y, f.tupled)
+    def tabulate2d[A](x: Int, y: Int, f: ((Int, Int)) => A): Grid[A] = IndexedSeq.tabulate(y, x)((x, y) => f((y,x)))
+    def allXYs[A](x: Int, y: Int): Seq[(Int, Int)] = for {xx <- 0 until x; yy <- 0 until y} yield xx -> yy
+    def allXYsLazy[A](x: Int, y: Int): LazyList[(Int, Int)] =
+      for {xx <- LazyList.range(0, x); yy <- LazyList.range(0, y)} yield xx -> yy
   }
   val Grid: IndexedSeq.type = IndexedSeq
 }

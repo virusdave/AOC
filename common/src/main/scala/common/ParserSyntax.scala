@@ -22,4 +22,7 @@ trait InRegexParserSyntax { this: RegexParsers =>
     def splitAtDoubleLinebreaksAndParseChunkBy[A: ClassTag](p: Parser[A]): IndexedSeq[A] =
       in.splitAtDoubleLinebreaksBy(parseAll(p, _).getOrFail)
   }
+  implicit class _ParserListOps[A](in: Parser[List[A]]) {
+    def indexed: Parser[IndexedSeq[A]] = in ^^ (_.toIndexedSeq)
+  }
 }
