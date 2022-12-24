@@ -73,6 +73,7 @@ trait Syntax {
       (ev.plus(in._1, that._1), ev.plus(in._2, that._2))
     def -(that: (A, A))(implicit ev: Numeric[A]): (A, A) =
       (ev.minus(in._1, that._1), ev.minus(in._2, that._2))
+    def *(that: A)(implicit ev: Numeric[A]): (A, A) = (ev.times(in._1, that), ev.times(in._2, that))
     def unary_-(implicit ev: Numeric[A]): (A, A) = (ev.negate(in._1), ev.negate(in._2))
   }
 
