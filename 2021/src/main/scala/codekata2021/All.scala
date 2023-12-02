@@ -32,7 +32,12 @@ object All extends App {
   } yield ())
 
   private def solutions: Seq[Puzzle] = Seq(
-    days.Latest,
+//    days.Latest,
+//    days.Day23,
+//    days.Day22,
+//    days.Day21,
+//    days.Day20,
+    days.Day19,
     days.Day18,
     days.Day17,
     days.Day16,

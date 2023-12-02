@@ -2,9 +2,12 @@ package codekata2021
 
 import common.InRegexParserSyntax
 import scala.util.parsing.combinator.RegexParsers
-import zio.{RIO, ZEnv}
+import zio.{RIO, ZEnv, ZIO}
 
-case class PuzzlePart[+A](solution: RIO[ZEnv, A])
+class PuzzlePart[+A] private (val solution: RIO[ZEnv, A])
+object PuzzlePart {
+  def apply[A](solution: => RIO[ZEnv, A]) = new PuzzlePart(ZIO(solution).flatten)
+}
 
 trait Puzzle {
   type PuzzleOut

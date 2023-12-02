@@ -85,6 +85,7 @@ object Day17 extends ParserPuzzle {
     case class CacheValue(floor: BigInt, shapeGlobalIndex: BigInt)
     case class State(
         motions: LazyList[(Pair, Int)], rocks: Set[Pair], maxY: Int, floor: BigInt,
+        floorResets: Int,
         cache: Option[Map[CacheKey, CacheValue]],
     )
 
@@ -105,15 +106,15 @@ object Day17 extends ParserPuzzle {
           val now = System.currentTimeMillis()
           val prettyLeft = Try {
             Duration.fromMillis(((now - before) * (limit.toDouble / shapeGlobalIndex.toDouble - 1)).toLong).render
-          }.getOrElse(s"Failed to render ETA update")
+          }.getOrElse(s"Failed to render ETA update".debug)
 
           val prettyTotal = Try {
             Duration.fromMillis(((now - before) * (limit.toDouble / shapeGlobalIndex.toDouble)).toLong).render
-          }.getOrElse(s"Failed to render ETA update")
+          }.getOrElse(s"Failed to render ETA update".debug)
 
           val percent = "%.2f".format(shapeGlobalIndex.toDouble * 10000.0 / limit.toDouble / 100)
 
-          s"$shapeGlobalIndex: ${percent} %, ETA [$prettyLeft] left of [$prettyTotal] total; cache size ${state.cache.map(_.size).getOrElse(-1)}, floor: ${state.floor}, maxY: ${state.maxY}, rocks: ${state.rocks.size}".debugSameLine
+          s"$shapeGlobalIndex: ${percent} %, ETA [$prettyLeft] left of [$prettyTotal] total; cache size ${state.cache.map(_.size).getOrElse(-1)}, floor: ${state.floor}, maxY: ${state.maxY}, floor resets: ${state.floorResets}, rocks: ${state.rocks.size}".debugSameLine
         }
 
         val cacheKey = CacheKey(state.motions.head._2, shapeIdx, state.rocks)
@@ -156,6 +157,7 @@ object Day17 extends ParserPuzzle {
                 newRocks,
                 (shapeYs :+ state.maxY).max - newFloor.getOrElse(0),
                 realNewFloor + (skipLoopCount * (realNewFloor - cachedValue.floor)),
+                state.floorResets + newFloor.fold2(0, _ => 1),
                 None, // Disable caching from this point forward
               )
             s"\nskipping forward from turn $shapeGlobalIndex to turn ${shapeGlobalIndex + skipLoopCount * piecesInLoop}\n".debug
@@ -168,6 +170,7 @@ object Day17 extends ParserPuzzle {
                 newRocks,
                 (shapeYs :+ state.maxY).max - newFloor.getOrElse(0),
                 realNewFloor,
+                state.floorResets + newFloor.fold2(0, _ => 1),
                 state.cache.map(_ + (cacheKey -> cacheValue)),
               )
             go(shapeTail, newState)
@@ -175,7 +178,7 @@ object Day17 extends ParserPuzzle {
     }
     val finalState = go(
       shapes.zip(LazyList.iterate(1.big)(_ + 1)),
-      State(parsed, Set.empty, 0, 0, Map.empty.some),
+      State(parsed, Set.empty, 0, 0, 0, Map.empty.some),
     )
 
     "\n".debug

@@ -3,35 +3,38 @@ load("//bazel/scala:scalac_opts.bzl", "allow_unused_and_adapted_and_widened")
 
 scala_library(
     name = "package",
-    srcs = glob([
-        "**/codekata2021/*.scala",
-        #"**/codekata2016/util/*.scala"
-    ],
-    exclude = [
-        "**/codekata2021/All.scala",
-    ]),
+    srcs = glob(
+        [
+            "**/codekata2021/*.scala",
+            #"**/codekata2016/util/*.scala"
+        ],
+        exclude = [
+            "**/codekata2021/All.scala",
+        ],
+    ),
     deps = [
-        "//common:syntax",
         "//common:parser_syntax",
+        "//common:syntax",
         "@maven//:co_fs2_fs2_core_2_13",
         "@maven//:com_beachape_enumeratum_2_13",
+        "@maven//:com_chuusai_shapeless_2_13",
         "@maven//:com_codecommit_gll_combinators_2_13",
         "@maven//:dev_zio_zio_2_13",
-        "@maven//:dev_zio_zio_streams_2_13",
         "@maven//:dev_zio_zio_interop_cats_2_13",
+        "@maven//:dev_zio_zio_streams_2_13",
+        "@maven//:io_carpe_parseback_2_13",
         "@maven//:io_circe_circe_core_2_13",
         "@maven//:io_circe_circe_parser_2_13",
-        "@maven//:io_carpe_parseback_2_13",
         "@maven//:org_creativescala_doodle_2_13",
         "@maven//:org_creativescala_doodle_core_2_13",
         "@maven//:org_creativescala_doodle_image_2_13",
         "@maven//:org_creativescala_doodle_interact_2_13",
         "@maven//:org_creativescala_doodle_java2d_2_13",
         "@maven//:org_leibnizcenter_probabilistic_earley_parser",
-        "@maven//:org_scalanlp_breeze_2_13",
         "@maven//:org_scala_graph_graph_core_2_13",
         "@maven//:org_scala_lang_modules_scala_parallel_collections_2_13",
         "@maven//:org_scala_lang_modules_scala_parser_combinators_2_13",
+        "@maven//:org_scalanlp_breeze_2_13",
         "@maven//:org_typelevel_cats_core_2_13",
         "@maven//:org_typelevel_cats_effect_2_13",
     ],
@@ -67,5 +70,5 @@ scala_binary(
     deps = [
         ":latest",
         ":solutions",
-    ]
+    ],
 )
